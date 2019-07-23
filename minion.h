@@ -11,18 +11,18 @@ class Player;
 class Enchantment;
 
 class Minion final: public Card {
-	int attack;
-	int defense;
-	int actions;
-	std::shared_ptr<Triggered> triggered;
-	std::shared_ptr<Activated> activated;
-	vector<Enchantment> enchantments; 
-	
-	public:
-	Minion(string name, int cost, int attack, int defense, std::shared_ptr<Triggered> triggered, std::shared_ptr<Activated> activated);
-	void castedBy(Ability& ability);
-	void attack(Minion& minion);
-	void attack(Player& player);
+        int attack;
+        int defense;
+        int actions;
+        std::shared_ptr<Triggered> triggered;
+        std::shared_ptr<Activated> activated;
+        vector<Enchantment> enchantments;
+
+        public:
+        Minion(std::string name, int cost, int attack, int defense, std::shared_ptr<Triggered> triggered, std::shared_ptr<Activated> activated);
+        void castedBy(Ability& ability);
+        void attack(Minion& minion);
+        void attack(Player& player);
 }
 
 #endif
