@@ -1,0 +1,12 @@
+-init example.init
+end
+play 1
+end
+play 1
+end
+play 3
+end
+attack 1 1 
+play 3
+end
+exit
