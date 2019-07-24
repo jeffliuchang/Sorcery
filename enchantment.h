@@ -9,6 +9,7 @@ class Ability;
 
 
 class Enchantment final : public Card {
+	/*
         int addAttack;
         int multiAttack;
         int addDefense;
@@ -18,6 +19,7 @@ class Enchantment final : public Card {
         public:
         Enchantment(std::string name, int cost, int addAttack, int multiAttack, int addDefense, int multiDefense);
         void effect(std::shared_ptr<Minion> target);
+        */
 };
 
 #endif

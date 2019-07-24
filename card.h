@@ -9,7 +9,7 @@ class Card{
 
 	public:
 	Card(std::string name, int cost);
-	virtual ~Card() = 0;
+	virtual ~Card() = default;
 };
 
 #endif

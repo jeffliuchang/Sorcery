@@ -8,8 +8,8 @@ class Activated : public Ability {
 public:
 	Activated(std::string description, int cost);
 	virtual ~Activated() = default;
-	virtual void usedOn(std::shared_ptr<Minion> minion) override;
-	virtual void usedOn(std::shared_ptr<Player> player) override;
+	virtual void usedOn(Minion &minion) override;
+	virtual void usedOn(Player &player) override;
 };
 
 

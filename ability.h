@@ -12,8 +12,8 @@ class Ability {
 public:
 	Ability(std::string description);
 	virtual ~Ability() = default;
-	virtual void usedOn(std::shared_ptr<Minion> minion) = 0;
-	virtual void usedOn(std::shared_ptr<Player> player) = 0;
+	virtual void usedOn(Minion &minion) = 0;
+	virtual void usedOn(Player &player) = 0;
 };
 
 

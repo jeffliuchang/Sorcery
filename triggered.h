@@ -10,8 +10,8 @@ class Triggered : public Ability {
 public:
 	Triggered(std::string description, Condition condition);
 	~Triggered() = default;
-	virtual void usedOn(std::shared_ptr<Minion> minion) override;
-	virtual void usedOn(std::shared_ptr<Player> player) override;
+	virtual void usedOn(Minion &minion) override;
+	virtual void usedOn(Player &player) override;
 };
 
 
