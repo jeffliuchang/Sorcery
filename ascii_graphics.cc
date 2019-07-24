@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 0e54d17d96ad052dad7e0600b907d2ea4b0089ed
 #include "ascii_graphics.h"
 #include <sstream>
 
@@ -467,7 +464,3 @@ static void prepare_for_replace(card_template_t &text) {
     }
   }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 0e54d17d96ad052dad7e0600b907d2ea4b0089ed
