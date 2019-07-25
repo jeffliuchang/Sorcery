@@ -8,12 +8,24 @@ using namespace std;
 
 
 bool overwrite(ifstream &ifs, istream &is, string &s) {
-	if (!(ifs >> s)) {
-		if (!(is >> s)) {
+	if (!getline(ifs,s)) {
+		if (!getline(is,s)) {
+			cout << "read fails" << endl;
 			return false;
 		}
 	}
-	return true;
+	cout << "s is: " << s << endl;
+ 	return true;
+}
+
+vector<string> loadDeck(string file) {
+	ifstream ifs{file};
+	string s;
+	vector<string> vec;
+	while (getline(ifs,s)) {
+		vec.emplace_back(s);
+	}
+	return vec;
 }
 
 int main(int argc, char *argv[]) {
@@ -47,8 +59,18 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1};
-	  Player player2{p2};
+	  Player player1{p1, loadDeck("default.deck")};
+	  Player player2{p2, loadDeck("default.deck")};
+	  /*
+	  cout << player1.getName() << endl;
+	  for (string &s : player1.getDeck()) {
+		  cout << s << endl;
+	  }
+	  cout << player2.getName() << endl;
+	  for (string &s : player2.getDeck()) {
+	  		  cout << s << endl;
+	  }
+	  */
 	  while (overwrite(init,cin,cmd)) {
 		  cout << cmd << endl;
 		  if (cmd == "help") {
@@ -75,6 +97,7 @@ int main(int argc, char *argv[]) {
 
 		  }
 	  }
+	  cout << "loop ends" << endl;
   }
-  catch (ios::failure &) {}
+  catch (ios::failure &) {cout << "got here" << endl;}
 }

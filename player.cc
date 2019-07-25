@@ -1,10 +1,18 @@
 #include "player.h"
 #include <iostream>
+#include <vector>
 
-Player::Player(std::string name):name(name){
+Player::Player(std::string name, std::vector<std::string> deck):name(name),deck(deck){
 	std::cout << "player constructor for " << name << std::endl;
 }
 
+std::string Player::getName() {
+	return name;
+}
+
+std::vector<std::string> Player::getDeck() {
+	return deck;
+}
 /*
 Player::Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 		std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,

@@ -10,11 +10,13 @@
 */
 #include <string>
 #include <memory>
+#include <vector>
 
 
 
 class Player {
 	std::string name;
+	std::vector<std::string> deck;
 	/*
 	int hp;
 	int magic;
@@ -26,7 +28,9 @@ class Player {
 	std::shared_ptr<Deck> deck;
 	*/
 public:
-	Player(std::string name);
+	Player(std::string name, std::vector<std::string> deck);
+	std::string getName();
+	std::vector<std::string> getDeck();
 	/*
 	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,
