@@ -4,37 +4,30 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include <memory>
+
+class Card;
+class Minion;
+class Spell;
+class Enchantment;
+class Ritual;
 
 enum class Type{Minion, Spell, Enchantment, Ritual, Triggered, Activated, NA};
 
 struct Cardtype {
-	std::vector<std::string> minions{"Air Elemental", "Earth Elemental", "Bone Golem",
-		"Fire Elemental", "Potion Seller", "Novice Pyromancer", "Apprentice Summoner",
-		"Master Summoner"};
-
-	std::vector<std::string> spell{"Banish", "Unsummon", "Recharge", "Disenchant",
+	std::vector<Minion> minions;
+/*
+	std::vector<std::string> spells{"Banish", "Unsummon", "Recharge", "Disenchant",
 		"Raise Dead", "Blizzard"};
 
 	std::vector<std::string> enchantments{"Giant Strength", "Enrage", "Haste",
 		"Magic Fatigue", "Silence"};
 
 	std::vector<std::string> rituals{"Dark Ritual", "Aura of Power", "Standstill"};
-
-	Type classify(std::string name) {
-		for (int i = 0; i < minions.size(); ++i) {
-			if (minions.at(i) == name) return Type::Minion;
-		}
-		for (int j = 0; j < spell.size(); ++j) {
-			if (spell.at(j) == name) return Type::Spell;
-		}
-		for (int m = 0; m < enchantments.size(); ++m) {
-			if (enchantments.at(m) == name) return Type::Enchantment;
-		}
-		for (int n = 0; n < rituals.size(); ++n) {
-			if (rituals.at(n) == name) return Type::Ritual;
-		}
-		return Type::NA;
-	}
+*/
+	Cardtype();
+	std::pair<Type,int> construct(std::string name);
 };
 
 

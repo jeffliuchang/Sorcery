@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include "player.h"
-
+#include "cardtype.h"
 using namespace std;
 
 
@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
 
 
   try {
+	  Cardtype ct{};
 	  string p1;
 	  string p2;
 	  overwrite(init,cin,p1);
