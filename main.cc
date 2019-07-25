@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
 	  overwrite(init,cin,p2);
 	  Player player1{p1, loadDeck("default.deck"), true};
 	  Player player2{p2, loadDeck("default.deck"), true};
+	  Cardtype ct{};
 
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
@@ -98,28 +99,33 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "discard") {
 
 		  } else if (next == "attack") {
-			  int num, num2;
-			  if (next >> num) {
-				  if (next >> num2) {
+                          int attacker, victim;
+                          if (next >> attacker) {
+                                  if (next >> victim) {
+                                          //attack opposing minion
+                                  } else {
+                                          if (*curr == player1) curr->board.at(attacker).attack(player1);
+                                          else curr->board.at(attacker).attack(player2);
+                                  }
+                          }
+                  } else if (next == "play") {
+                          int mine, player, yours;
+                          if (next >> mine) {
+                                  if ((next >> player) && (next >> yours)){
 
-				  } else {
-
-				  }
-			  }
-			  //curr->hand;
-
-		  } else if (next == "play") {
-			  int mine, player, yours;
-			  if (next >> mine) {
-				  if ((next >> player) && (next >> yours)){
-
-				  } else {
-
-				  }
-			  }
-
-
-		  } else if (next == "use") {
+                                  } else {
+                                          std::string name = curr->hand.at(mine);
+                                          std::pair<Type,int> p = ct.construct(name);
+                                          if (p.first == Type::Minion) {
+                                                  curr->board.emplace_back(ct.minions.at(p.second));
+                                          } else if (p.first == Type::Spell) {
+                                          } else if (p.first == Type::Enchantment) {
+                                          } else if (p.first == Type::Ritual) {
+                                          } else if (p.first == Type::NA) {
+                                          }
+                                  }
+                          }
+                  } else if (next == "use") {
 
 		  } else if (next == "describe") {
 
