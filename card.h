@@ -10,6 +10,8 @@ class Card{
 	public:
 	Card(std::string name, int cost);
 	virtual ~Card() = default;
+	std::string getName();
+	int getCost();
 };
 
 #endif

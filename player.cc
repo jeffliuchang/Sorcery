@@ -1,8 +1,28 @@
 #include "player.h"
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
-Player::Player(std::string name, std::vector<std::string> deck):name(name),deck(deck){
+Player::Player(std::string name, std::vector<std::string> mydeck, bool shuffle)
+:name(name),hp(20),magic(3){
+
+	if (shuffle) {
+		for (int j = mydeck.size(); j > 0; --j ) {
+			int k = rand() % j;
+			std::string temp = mydeck[j-1];
+			mydeck[j-1] = mydeck[k];
+			mydeck[k] = temp;
+		}
+	}
+
+	deck = mydeck;
+
+
+	for (int i = 0; i < 5; ++ i) {
+		hand.emplace_back(deck.at(i));
+		deck.erase(deck.begin());
+	}
+
 	std::cout << "player constructor for " << name << std::endl;
 }
 
@@ -13,6 +33,51 @@ std::string Player::getName() {
 std::vector<std::string> Player::getDeck() {
 	return deck;
 }
+
+std::vector<std::string> Player::getHand() {
+	return hand;
+}
+
+int Player::getHp() {
+	return hp;
+}
+
+void Player::loseHp(int hpLost) {
+	hp -= hpLost;
+}
+
+int Player::getMagic() {
+	return magic;
+}
+
+void Player::endTurn() {
+	std::cout << getName() << " ends turn" << std::endl;
+	std::cout << "hp: " << getHp() << std::endl;
+	std::cout << "magic: " << getMagic() << std::endl;
+}
+
+void Player::startTurn() {
+	std::cout << getName() << " starts turn" << std::endl;
+	this->draw();
+	magic++;
+}
+
+void Player::draw() {
+	if (hand.size() < 5) {
+		hand.emplace_back(deck.at(0));
+		deck.erase(deck.begin());
+	}
+}
+
+void Player::play(int i) {
+	// initialize a minion/spell/enchantment/ritual based on string at position i;
+	string name = hand.at(i);
+	//.....
+
+	board.emplace_back();
+}
+
+
 /*
 Player::Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 		std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,

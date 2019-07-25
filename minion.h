@@ -11,21 +11,28 @@ class Ability;
 class Player;
 class Enchantment;
 
+
 class Minion final: public Card {
         int atk;
         int def;
+        /*
         int actions;
         std::shared_ptr<Triggered> triggered;
         std::shared_ptr<Activated> activated;
+        */
         //std::vector<Enchantment> enchantments;
 
         public:
+        Minion(std::string name, int cost,int atk, int def);
+        /*
         Minion(std::string name, int cost, int attack, int defense, int actions,
         		std::shared_ptr<Triggered> triggered, std::shared_ptr<Activated> activated);
         void castedBy(Ability& ability);
 
         void attack(Minion& minion);
+        */
         void attack(Player& player);
+
 };
 
 

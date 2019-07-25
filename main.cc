@@ -10,11 +10,9 @@ using namespace std;
 bool overwrite(ifstream &ifs, istream &is, string &s) {
 	if (!getline(ifs,s)) {
 		if (!getline(is,s)) {
-			cout << "read fails" << endl;
 			return false;
 		}
 	}
-	cout << "s is: " << s << endl;
  	return true;
 }
 
@@ -26,6 +24,14 @@ vector<string> loadDeck(string file) {
 		vec.emplace_back(s);
 	}
 	return vec;
+}
+
+void updateCurr(Player *&curr, Player *player1, Player * player2) {
+	if (curr == player1) {
+		curr = player2;
+	} else {
+		curr = player1;
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -59,41 +65,66 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("default.deck")};
-	  Player player2{p2, loadDeck("default.deck")};
-	  /*
+	  Player player1{p1, loadDeck("default.deck"), true};
+	  Player player2{p2, loadDeck("default.deck"), true};
+
 	  cout << player1.getName() << endl;
-	  for (string &s : player1.getDeck()) {
-		  cout << s << endl;
-	  }
-	  cout << player2.getName() << endl;
-	  for (string &s : player2.getDeck()) {
+	  	  for (string &s : player1.getDeck()) {
 	  		  cout << s << endl;
-	  }
-	  */
+	  	  }
+	  	  cout << player2.getName() << endl;
+	  	  for (string &s : player2.getDeck()) {
+	  	  		  cout << s << endl;
+	  	  }
+
+	  Player *curr = &player1;
+
 	  while (overwrite(init,cin,cmd)) {
 		  cout << cmd << endl;
-		  if (cmd == "help") {
+		  istringstream line(cmd);
+		  string next;
+		  line >> next;
+		  if (next == "help") {
 
-		  } else if (cmd == "end") {
+		  } else if (next == "end") {
+			  curr->endTurn();
+			  updateCurr(curr,&player1,&player2);
+			  curr->startTurn();
+		  } else if (next == "quit") {
 
-		  } else if (cmd == "quit") {
+		  } else if (next == "draw") {
 
-		  } else if (cmd == "draw") {
+		  } else if (next == "discard") {
 
-		  } else if (cmd == "discard") {
+		  } else if (next == "attack") {
+			  int num, num2;
+			  if (next >> num) {
+				  if (next >> num2) {
 
-		  } else if (cmd == "attack") {
+				  } else {
 
-		  } else if (cmd == "play") {
+				  }
+			  }
+			  //curr->hand;
 
-		  } else if (cmd == "use") {
+		  } else if (next == "play") {
+			  int mine, player, yours;
+			  if (next >> mine) {
+				  if ((next >> player) && (next >> yours)){
 
-		  } else if (cmd == "describe") {
+				  } else {
 
-		  } else if (cmd == "hand") {
+				  }
+			  }
 
-		  } else if (cmd == "board") {
+
+		  } else if (next == "use") {
+
+		  } else if (next == "describe") {
+
+		  } else if (next == "hand") {
+
+		  } else if (next == "board") {
 
 		  }
 	  }

@@ -12,11 +12,15 @@
 #include <memory>
 #include <vector>
 
-
+class Minion;
 
 class Player {
 	std::string name;
+	int hp;
+	int magic;
 	std::vector<std::string> deck;
+	std::vector<std::string> hand;
+	std::vector<Minion> board;
 	/*
 	int hp;
 	int magic;
@@ -28,9 +32,17 @@ class Player {
 	std::shared_ptr<Deck> deck;
 	*/
 public:
-	Player(std::string name, std::vector<std::string> deck);
+	Player(std::string name, std::vector<std::string> mydeck, bool shuffle);
 	std::string getName();
 	std::vector<std::string> getDeck();
+	std::vector<std::string> getHand();
+	int getHp();
+	void loseHp(int hpLost);
+	int getMagic();
+	void endTurn();
+	void startTurn();
+	void draw();
+	void play(int i);
 	/*
 	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,
