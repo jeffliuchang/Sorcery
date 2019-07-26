@@ -20,7 +20,7 @@ Player::Player(std::string name, std::vector<std::string> mydeck, bool shuffle)
 
 
 	for (int i = 0; i < 5; ++i) {
-		hand.emplace_back(deck.at(i));
+		hand.emplace_back(deck.at(0));
 		deck.erase(deck.begin());
 	}
 
