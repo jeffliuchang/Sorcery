@@ -4,12 +4,13 @@
 #include "ability.h"
 
 class Activated : public Ability {
-	int cost;
+	int actCost;
 public:
 	Activated(std::string description, int cost);
 	virtual ~Activated() = default;
-	virtual void usedOn(Minion &minion) override;
+	int getCost();
 	virtual void usedOn(Player &player) override;
+	virtual void usedOn(Player &player, int pos) override;
 };
 
 

@@ -113,33 +113,67 @@ int main(int argc, char *argv[]) {
 				  }
 			  }
 		  } else if (next == "play") {
-			  std::cout << "reach play in main" << std::endl;
-			  int mine, player, yours;
+			  //std::cout << "reach play in main" << std::endl;
+			  int mine, player, yourPos;
+			  string yours;
 			  if (line >> mine) {
-				  if ((line >> player) && (line >> yours)){
-
+				  if ((line >> player) && (line >> yours)) {
+					  if (yours == "r") {
+						  if (player == 1) {
+						  } else {
+						  }
+					  } else {
+						  istringstream pos(yours);
+						  pos >> yourPos;
+						  if (player == 1) {
+						  } else {
+						  }
+					  }
 				  } else {
 					  std::string name = curr->getHand().at(mine-1);
 					  std::pair<Type,int> p = ct.construct(name);
+					  bool played;
 					  if (p.first == Type::Minion) {
-						  curr->play(ct.minions.at(p.second));
+						  played = curr->play(ct.minions.at(p.second));
 					  } else if (p.first == Type::Spell) {
 					  } else if (p.first == Type::Enchantment) {
 					  } else if (p.first == Type::Ritual) {
 					  } else if (p.first == Type::NA) {
 					  }
 
-					  curr->removeHand(mine-1);
+					  if (played) curr->removeHand(mine-1);
 				  }
 			  }
 		  } else if (next == "use") {
-
+			  int mine, player, yourPos;
+			  string yours;
+			  if (line >> mine) {
+				  if ((line >> player) && (line >> yours)) {
+						  if (yours == "r") {
+							  if (player == 1) {
+								  curr->getBoard().at(mine-1).getActivated().usedOn(player1);
+							  } else {
+								  curr->getBoard().at(mine-1).getActivated().usedOn(player2);
+							  }
+						  } else {
+							  istringstream pos(yours);
+							  pos >> yourPos;
+							  if (player == 1) {
+								  curr->getBoard().at(mine-1).getActivated().usedOn(player1, yourPos-1);
+							  } else {
+								  curr->getBoard().at(mine-1).getActivated().usedOn(player2, yourPos-1);
+							  }
+						  }
+				  }
+			  } else {
+				  curr->getBoard().at(mine-1).getActivated().usedOn(*curr);
+			  }
 		  } else if (next == "describe") {
 
 		  } else if (next == "hand") {
 
 		  } else if (next == "board") {
-
+			  curr->displayBoard();
 		  }
 	  }
 	  cout << "loop ends" << endl;

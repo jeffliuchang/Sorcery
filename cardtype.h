@@ -12,11 +12,13 @@ class Minion;
 class Spell;
 class Enchantment;
 class Ritual;
+class Activated;
 
 enum class Type{Minion, Spell, Enchantment, Ritual, Triggered, Activated, NA};
 
 struct Cardtype {
 	std::vector<Minion> minions;
+	std::vector<Activated> activated;
 /*
 	std::vector<std::string> spells{"Banish", "Unsummon", "Recharge", "Disenchant",
 		"Raise Dead", "Blizzard"};

@@ -12,8 +12,9 @@ class Ability {
 public:
 	Ability(std::string description);
 	virtual ~Ability() = default;
-	virtual void usedOn(Minion &minion) = 0;
+	std::string getDescription();
 	virtual void usedOn(Player &player) = 0;
+	virtual void usedOn(Player &player, int pos) = 0;
 };
 
 

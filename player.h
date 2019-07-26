@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 
+class Card;
 class Minion;
 
 class Player {
@@ -21,6 +22,7 @@ class Player {
 	std::vector<std::string> deck;
 	std::vector<std::string> hand;
 	std::vector<Minion> board;
+	std::vector<Minion> gy;
 	/*
 	int hp;
 	int magic;
@@ -36,6 +38,7 @@ public:
 	std::string getName();
 	std::vector<std::string> getDeck();
 	std::vector<std::string> getHand();
+	std::vector<Minion> getBoard();
 
 	int getHp();
 	void loseHp(int hpLost);
@@ -44,9 +47,13 @@ public:
 	void endTurn();
 	void startTurn();
 	void draw();
-	void play(Minion newM);
+	bool play(Minion newM);
 	void attack(int attacker, Player& player);
 	void attack(int attacker, Player& player, int victim);
+	void minionToGraveyard(int boardPos);
+	void minionDamaged(int pos, int damage);
+
+	void displayBoard();
 	/*
 	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,
