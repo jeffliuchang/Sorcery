@@ -23,10 +23,11 @@ Cardtype::Cardtype() {
 }
 
 std::pair<Type,int> Cardtype::construct(std::string name) {
-	for (int i = 0; i < minions.size(); ++i) {
+	int size = minions.size();
+	for (int i = 0; i < size; ++i) {
 		if (minions.at(i).getName() == name)
-			return std::pair(Type::Minion,i);
+			return std::pair<Type,int>{Type::Minion,i};
 	}
-	return std::pair(Type::NA,-1);
+	return std::pair<Type,int>{Type::NA,-1};
 }
 

@@ -36,13 +36,17 @@ public:
 	std::string getName();
 	std::vector<std::string> getDeck();
 	std::vector<std::string> getHand();
+
 	int getHp();
 	void loseHp(int hpLost);
 	int getMagic();
+	void removeHand(int pos);
 	void endTurn();
 	void startTurn();
 	void draw();
-	void play(int i);
+	void play(Minion newM);
+	void attack(int attacker, Player& player);
+	void attack(int attacker, Player& player, int victim);
 	/*
 	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,

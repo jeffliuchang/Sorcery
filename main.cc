@@ -4,6 +4,7 @@
 #include <string>
 #include "player.h"
 #include "cardtype.h"
+#include "minion.h"
 using namespace std;
 
 
@@ -66,10 +67,9 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("default.deck"), true};
-	  Player player2{p2, loadDeck("default.deck"), true};
-	  Cardtype ct{};
-
+	  Player player1{p1, loadDeck("default.deck"), false};
+	  Player player2{p2, loadDeck("default.deck"), false};
+/*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
 	  		  cout << s << endl;
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 	  	  for (string &s : player2.getDeck()) {
 	  	  		  cout << s << endl;
 	  	  }
-
+*/
 	  Player *curr = &player1;
 
 	  while (overwrite(init,cin,cmd)) {
@@ -99,33 +99,40 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "discard") {
 
 		  } else if (next == "attack") {
-                          int attacker, victim;
-                          if (next >> attacker) {
-                                  if (next >> victim) {
-                                          //attack opposing minion
-                                  } else {
-                                          if (*curr == player1) curr->board.at(attacker).attack(player1);
-                                          else curr->board.at(attacker).attack(player2);
-                                  }
-                          }
-                  } else if (next == "play") {
-                          int mine, player, yours;
-                          if (next >> mine) {
-                                  if ((next >> player) && (next >> yours)){
+			  int attacker, victim;
+			  if (line >> attacker) {
+				  if (line >> victim) {
+					  //attack opposing minion
+				  } else {
+					  std::cout << "reach 1" << std::endl;
+					  if (curr == &player1) {
+						  curr->attack(attacker-1, player2);
+					      std::cout << "reach 2" << std::endl;
+					  }
+					  else curr->attack(attacker-1, player1);
+				  }
+			  }
+		  } else if (next == "play") {
+			  std::cout << "reach play in main" << std::endl;
+			  int mine, player, yours;
+			  if (line >> mine) {
+				  if ((line >> player) && (line >> yours)){
 
-                                  } else {
-                                          std::string name = curr->hand.at(mine);
-                                          std::pair<Type,int> p = ct.construct(name);
-                                          if (p.first == Type::Minion) {
-                                                  curr->board.emplace_back(ct.minions.at(p.second));
-                                          } else if (p.first == Type::Spell) {
-                                          } else if (p.first == Type::Enchantment) {
-                                          } else if (p.first == Type::Ritual) {
-                                          } else if (p.first == Type::NA) {
-                                          }
-                                  }
-                          }
-                  } else if (next == "use") {
+				  } else {
+					  std::string name = curr->getHand().at(mine-1);
+					  std::pair<Type,int> p = ct.construct(name);
+					  if (p.first == Type::Minion) {
+						  curr->play(ct.minions.at(p.second));
+					  } else if (p.first == Type::Spell) {
+					  } else if (p.first == Type::Enchantment) {
+					  } else if (p.first == Type::Ritual) {
+					  } else if (p.first == Type::NA) {
+					  }
+
+					  curr->removeHand(mine-1);
+				  }
+			  }
+		  } else if (next == "use") {
 
 		  } else if (next == "describe") {
 

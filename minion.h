@@ -24,6 +24,7 @@ class Minion final: public Card {
 
         public:
         Minion(std::string name, int cost,int atk, int def);
+        //~Minion() override;
         /*
         Minion(std::string name, int cost, int attack, int defense, int actions,
         		std::shared_ptr<Triggered> triggered, std::shared_ptr<Activated> activated);

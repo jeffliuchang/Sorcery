@@ -1,4 +1,5 @@
 #include "player.h"
+#include "minion.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -18,7 +19,7 @@ Player::Player(std::string name, std::vector<std::string> mydeck, bool shuffle)
 	deck = mydeck;
 
 
-	for (int i = 0; i < 5; ++ i) {
+	for (int i = 0; i < 5; ++i) {
 		hand.emplace_back(deck.at(i));
 		deck.erase(deck.begin());
 	}
@@ -50,6 +51,14 @@ int Player::getMagic() {
 	return magic;
 }
 
+void Player::removeHand(int pos) {
+	std::cout << "printing first two cards before erase: " << std::endl;
+	for (int j = 0; j < 2; ++j) std::cout << hand.at(j) << std::endl;
+	std::vector<std::string>::iterator it = hand.begin();
+	for (int i = 0; i < pos; ++it) { ++i; }
+	hand.erase(it);
+}
+
 void Player::endTurn() {
 	std::cout << getName() << " ends turn" << std::endl;
 	std::cout << "hp: " << getHp() << std::endl;
@@ -69,12 +78,20 @@ void Player::draw() {
 	}
 }
 
-void Player::play(int i) {
-	// initialize a minion/spell/enchantment/ritual based on string at position i;
-	string name = hand.at(i);
-	//.....
+void Player::play(Minion newM) {
+	board.emplace_back(newM);
+	std::cout << "board size is " << board.size() << std::endl;
+	for (int i = 0; i < board.size(); ++i) {
+		std::cout << board.at(i).getName() << std::endl;
+	}
+}
 
-	board.emplace_back();
+void Player::attack(int attacker, Player& player){
+	std::cout << "begin attack for " << name << std::endl;
+	board.at(attacker).attack(player);
+}
+
+void Player::attack(int attacker, Player& player, int victim){
 }
 
 
