@@ -9,8 +9,8 @@ public:
 	Activated(std::string description, int cost);
 	virtual ~Activated() = default;
 	int getCost();
-	virtual void usedOn(Player &player) override;
-	virtual void usedOn(Player &player, int pos) override;
+	virtual bool usedOn(Player &player) override;
+	virtual bool usedOn(Player &player, int pos) override;
 };
 
 

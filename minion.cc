@@ -26,14 +26,17 @@ Activated Minion::getActivated() {
 	return activated;
 }
 
-
 void Minion::attack(Player& player) {
 	player.loseHp(atk);
 }
 
 bool Minion::takeDamage(int damage) {
+	//std::cout << getName() << " defence is " << def << std::endl;
+	//std::cout << " it takes damage  " << damage << std::endl;
 	def -= damage;
 	if (def <= 0) {
+		//std::cout << getName() << " defence is " << def << std::endl;
+		//std::cout << getName() << " dies" << std::endl;
 		return true;
 	}
 	return false;
@@ -48,4 +51,16 @@ std::vector<std::string> Minion::display() {
 	} else {
 		return display_minion_no_ability(getName(), getCost(), atk, def);
 	}
+}
+
+void Minion::setDef(int def) {
+	this->def = def;
+}
+
+int Minion::getDef() {
+	return this->def;
+}
+
+int Minion::getAtk() {
+	return this->atk;
 }

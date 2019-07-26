@@ -1,6 +1,7 @@
 #include "player.h"
 #include "minion.h"
 #include "card.h"
+#include "spell.h"
 #include "ascii_graphics.h"
 #include <iostream>
 #include <vector>
@@ -102,9 +103,6 @@ void Player::attack(int attacker, Player& player){
 	board.at(attacker).attack(player);
 }
 
-void Player::attack(int attacker, Player& player, int victim){
-}
-
 void Player::minionToGraveyard(int boardPos) {
 	gy.emplace(gy.begin(),board.at(boardPos));
 	auto it = board.begin();
@@ -114,6 +112,11 @@ void Player::minionToGraveyard(int boardPos) {
 
 void Player::minionDamaged(int pos, int damage) {
 	bool die;
+	int size = board.size();
+	if (size <= pos) {
+		std::cout << "Victim position out of range." << std::endl;
+		return;
+	}
 	die = board.at(pos).takeDamage(damage);
 	if (die) {
 		minionToGraveyard(pos);
@@ -127,7 +130,16 @@ void Player::displayBoard() {
 		myBoard.emplace_back(board.at(i).display());
 	}
 
-	int size = myBoard.at(0).size();
+	int size = 11;
+	if (boardSize == 0) {
+		for (int a = 0; a < size; ++a) {
+			for (int b = 0; b < 5; ++b) {
+				std::cout << CARD_TEMPLATE_BORDER[a];
+			}
+			std::cout << std::endl;
+		}
+		return;
+	}
 	for (int a = 0; a < size; ++a) {
 		int size2 = myBoard.size();
 		for (int j = 0; j < size2; ++j) {
@@ -140,6 +152,36 @@ void Player::displayBoard() {
 			}
 		}
 	}
+}
+
+bool Player::resurrect() {
+	if (board.size() >= 5 or gy.size() < 1) {
+		std::cout << "Invalid use" << std::endl;
+		return false;
+	}
+	gy.at(0).setDef(1);
+	board.emplace_back(gy.at(0));
+	gy.erase(gy.begin());
+	return true;
+}
+
+bool Player::minionToHand(int boardPos) {
+	int boardSize = getBoard().size();
+	int handSize = getHand().size();
+	if (boardSize >= 5) {
+		std::cout << "Target board is full, cannot use this spell." << std::endl;
+		return false;
+	} else if (handSize >= 5) {
+		std::cout << "Target hand is full, cannot use this spell." << std::endl;
+		return false;
+	} else {
+		hand.emplace_back(board.at(boardPos).getName());
+		std::vector<Minion>::iterator it = board.begin();
+		for (int i = 0; i < boardPos; ++it) { ++i; }
+		board.erase(it);
+	}
+	return true;
+
 }
 /*
 Player::Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,

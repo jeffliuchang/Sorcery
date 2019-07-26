@@ -13,8 +13,8 @@ public:
 	Ability(std::string description);
 	virtual ~Ability() = default;
 	std::string getDescription();
-	virtual void usedOn(Player &player) = 0;
-	virtual void usedOn(Player &player, int pos) = 0;
+	virtual bool usedOn(Player &player) = 0;
+	virtual bool usedOn(Player &player, int pos) = 0;
 };
 
 

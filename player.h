@@ -49,8 +49,9 @@ public:
 	void draw();
 	bool play(Minion newM);
 	void attack(int attacker, Player& player);
-	void attack(int attacker, Player& player, int victim);
 	void minionToGraveyard(int boardPos);
+	bool resurrect();
+	bool minionToHand(int boardPos);
 	void minionDamaged(int pos, int damage);
 
 	void displayBoard();

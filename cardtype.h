@@ -6,10 +6,11 @@
 #include <string>
 #include <map>
 #include <memory>
+#include "spell.h"
 
 class Card;
 class Minion;
-class Spell;
+//class Spell;
 class Enchantment;
 class Ritual;
 class Activated;
@@ -18,6 +19,7 @@ enum class Type{Minion, Spell, Enchantment, Ritual, Triggered, Activated, NA};
 
 struct Cardtype {
 	std::vector<Minion> minions;
+	std::vector<Spell> spells;
 	std::vector<Activated> activated;
 /*
 	std::vector<std::string> spells{"Banish", "Unsummon", "Recharge", "Disenchant",

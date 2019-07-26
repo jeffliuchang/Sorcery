@@ -1,5 +1,6 @@
 #include "cardtype.h"
 #include "minion.h"
+#include "spell.h"
 #include "activated.h"
 /*
 #include "spell.h"
@@ -27,13 +28,31 @@ Cardtype::Cardtype() {
 	minions.emplace_back(Minion("Apprentice Summoner",1,1,1,activated.at(1)));
 	minions.emplace_back(Minion("Master Summoner",3,2,3,activated.at(2)));
 
+	spells.emplace_back(Spell("Banish", "Destroy target minion or ritual", 2));
+	spells.emplace_back(Spell("Unsummon", "Return target minion to its owner's hand", 1));
+	spells.emplace_back(Spell("Recharge", "Your ritual gains 3 charges", 1));
+	spells.emplace_back(Spell("Disenchant", "Destroy the top enchantment on target minion", 1));
+	spells.emplace_back(Spell("Raise Dead", "Resurrect the top minion in your graveyard and set its defence to 1", 1));
+	spells.emplace_back(Spell("Blizzard", "Deal 2 damage to all minions", 3));
+
 }
 
 std::pair<Type,int> Cardtype::construct(std::string name) {
 	int size = minions.size();
 	for (int i = 0; i < size; ++i) {
-		if (minions.at(i).getName() == name)
+		if (minions.at(i).getName() == name){
 			return std::pair<Type,int>{Type::Minion,i};
+		}
+
+	}
+
+	int size2 = spells.size();
+	for (int i = 0; i < size2; ++i) {
+		if (spells.at(i).getName() == name){
+			//std::cout << name << std::endl;
+			return std::pair<Type,int>{Type::Spell,i};
+		}
+
 	}
 	return std::pair<Type,int>{Type::NA,-1};
 }

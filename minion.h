@@ -37,6 +37,9 @@ class Minion final: public Card {
         Activated getActivated();
         void attack(Player& player);
         bool takeDamage(int damage);
+        void setDef(int def);
+        int getDef();
+        int getAtk();
         std::vector<std::string> display();
 
 };
