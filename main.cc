@@ -195,12 +195,12 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "hand") {
 
 		  } else if (next == "board") {
-			  player1->displayBoardRest(1);
-        		  player1->displayBoard();
+			  player1.displayBoardRest(1);
+        		  player1.displayBoard();
         	 	  int size = CENTRE_GRAPHIC.size();
         		  for (int i = 0; i < size; ++i) cout << CENTRE_GRAPHIC.at(i) << endl;
-        		  player2->displayBoard();
-        		  player2->displayBoardRest(2);
+        		  player2.displayBoard();
+        		  player2.displayBoardRest(2);
 		  }
 	  }
 	  cout << "loop ends" << endl;
