@@ -193,7 +193,27 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "describe") {
 
 		  } else if (next == "hand") {
-
+			  int handSize = curr->getHand().size();
+			  vector <std::pair<Type,int>> hands;
+			  int lines = 11;
+			  for (int a = 0; a < handSize; ++i) {
+				  std::string name = curr->getHand().at(a);
+				  hands.emplace_back(ct.construct(name);)
+			  }
+			  for (int i = 0; i < lines; ++i) {
+				  for (int j = 0; j < handSize; ++j) {
+					  if (hands.at(j).first == Type::Minion) {
+						  std::cout << ct.minions.at(p.second).display();
+					  } else if (p.first == Type::Spell) {
+						  std::cout << display_spell(ct.spells.at(p.second).getName(),
+									     ct.spells.at(p.second).getCost(),
+									     ct.spells.at(p.second).getDescription()).at(i);
+					  } else if (p.first == Type::Enchantment) continue;
+					  else if (p.first == Type::Ritual) continue;
+					  else if (p.first == Type::NA) continue;
+				  }
+				  std::cout << endl;
+			  }
 		  } else if (next == "board") {
 			  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
         		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
