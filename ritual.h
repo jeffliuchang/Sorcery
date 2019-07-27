@@ -13,9 +13,9 @@ class Ritual final : public Card, public Triggered {
 	int activationCost;
 
 	public:
-	Ritual(std::string name, int cost, std::string description, Condition condition, int charge, int activationCost);
-	void usedOn(Minion& minion) override;
-	void usedOn(Player& player) override;
+	Ritual(std::string name, std::string description, int cost, Condition condition, int charge, int activationCost);
+	bool usedOn(Player &player) override;
+	bool usedOn(Player &player, int pos) override;
 };
 
 
