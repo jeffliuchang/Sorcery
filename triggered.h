@@ -9,7 +9,7 @@ class Triggered : public Ability {
 	Condition condition;
 	Player *myPlayer;
 public:
-	Triggered(std::string description, Condition condition, Player *myPlayer);
+	Triggered(std::string description, Condition condition);
 	~Triggered() = default;
 	virtual bool usedOn(Player &player) override;
 	virtual bool usedOn(Player &player, int pos) override;

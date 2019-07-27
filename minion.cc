@@ -19,13 +19,16 @@ void Minion::attack(Minion& minion) {
 */
 
 Minion::Minion(std::string name, int cost,
-		int atk, int def, Activated activated)
-:Card(name,cost),atk(atk),def(def), activated(activated){}
+		int atk, int def, Activated activated, Triggered triggered)
+:Card(name,cost),atk(atk),def(def), activated(activated), triggered(triggered) {}
 
 Activated Minion::getActivated() {
 	return activated;
 }
 
+Triggered Minion::getTriggered() {
+	return triggered;
+}
 void Minion::attack(Player& player) {
 	player.loseHp(atk);
 }

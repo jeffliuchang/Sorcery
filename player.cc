@@ -3,6 +3,7 @@
 #include "card.h"
 #include "spell.h"
 #include "ascii_graphics.h"
+#include "triggered.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -66,16 +67,18 @@ void Player::removeHand(int pos) {
 	hand.erase(it);
 }
 
-void Player::endTurn() {
+void Player::endTurn(Player& opponent) {
 	std::cout << getName() << " ends turn" << std::endl;
 	std::cout << "hp: " << getHp() << std::endl;
 	std::cout << "magic: " << getMagic() << std::endl;
+	trigger(opponent, Condition::EndOfTurn);
 }
 
-void Player::startTurn() {
+void Player::startTurn(Player& opponent, Player& opponent) {
 	std::cout << getName() << " starts turn" << std::endl;
 	this->draw();
 	magic++;
+	trigger(opponent, Condition::StartOfTurn);
 }
 
 void Player::draw() {
@@ -85,9 +88,11 @@ void Player::draw() {
 	}
 }
 
-bool Player::play(Minion newM) {
+bool Player::play(Player& opponent, Minion newM) {
 	if (board.size() < 5) {
 		board.emplace_back(newM);
+		int pos = board.size()-1;
+		trigger(opponent,Condition::MinionEnterPlay,pos);
 		return true;
 	}
 	return false;
@@ -103,11 +108,12 @@ void Player::attack(int attacker, Player& player){
 	board.at(attacker).attack(player);
 }
 
-void Player::minionToGraveyard(int boardPos) {
+void Player::minionToGraveyard(Player& opponent, int boardPos) {
 	gy.emplace(gy.begin(),board.at(boardPos));
 	auto it = board.begin();
 	for (int i = 0; i < boardPos; ++i) { ++it; }
 	board.erase(it);
+	trigger(opponent,Condition::MinionExitPlay);
 }
 
 bool Player::minionDamaged(int pos, int damage) {
@@ -185,15 +191,15 @@ void Player::displayBoardRest(int playerNum) {
 			if (b == 0) std::cout << CARD_TEMPLATE_BORDER[a];
 			else if ((b == 1) || (b == 3)) std::cout << CARD_TEMPLATE_EMPTY[a];
 			else if (b == 2) std::cout << player.at(a);
-			else if ((b == 5) && !graveEmpty) std::cout << grave.at(a);
-			else if ((b == 5) && graveEmpty) std::cout << CARD_TEMPLATE_EMPTY[a];
+			else if ((b == 4) && !graveEmpty) std::cout << grave.at(a);
+			else if ((b == 4) && graveEmpty) std::cout << CARD_TEMPLATE_EMPTY[a];
 		}
 		std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN << std::endl;
 	}
 }
 
 
-bool Player::resurrect() {
+bool Player::resurrect(Player& opponent) {
 	if (board.size() >= 5) {
 		std::cout << "Board is full" << std::endl;
 		return false;
@@ -204,10 +210,12 @@ bool Player::resurrect() {
 	gy.at(0).setDef(1);
 	board.emplace_back(gy.at(0));
 	gy.erase(gy.begin());
+	int pos = board.size()-1;
+	trigger(opponent, Condition::MinionEnterPlay, pos);
 	return true;
 }
 
-bool Player::minionToHand(int boardPos) {
+bool Player::minionToHand(Player& opponent, int boardPos) {
 	int boardSize = getBoard().size();
 	int handSize = getHand().size();
 	if (boardSize >= 5) {
@@ -222,8 +230,39 @@ bool Player::minionToHand(int boardPos) {
 		for (int i = 0; i < boardPos; ++it) { ++i; }
 		board.erase(it);
 	}
+	trigger(opponent,Condition::MinionExitPlay);
 	return true;
 
+}
+
+void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
+	int size = board.size();
+	int pos = 0;
+	for (int i = 0; i < size; ++i) {
+		bool die = board.at(i).getTriggered().usedOn(*this,board.at(pos),enterOrExit,condition);
+		if (die) {
+			if (i == enterOrExit) {
+				--pos;
+			} else {
+				size -= 1;
+			}
+		}
+		++pos;
+	}
+
+	int opponentSize = opponent.getBoard().size();
+	pos = 0;
+	for (int i = 0; i < opponentSize; ++i) {
+		bool die = opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent.getBoard().at(pos),enterOrExit,condition);
+		if (die) {
+			if (i == enterOrExit) {
+				--pos;
+			} else {
+				opponentSize -= 1;
+			}
+		}
+		++pos;
+	}
 }
 /*
 Player::Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,

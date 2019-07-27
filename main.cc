@@ -84,6 +84,7 @@ int main(int argc, char *argv[]) {
 	  Player *curr = &player1;
 
 	  while (overwrite(init,cin,cmd)) {
+		  if (curr == &player1)
 		  cout << cmd << endl;
 		  istringstream line(cmd);
 		  string next;
@@ -196,21 +197,21 @@ int main(int argc, char *argv[]) {
 			  int handSize = curr->getHand().size();
 			  vector <std::pair<Type,int>> hands;
 			  int lines = 11;
-			  for (int a = 0; a < handSize; ++i) {
+			  for (int a = 0; a < handSize; ++a) {
 				  std::string name = curr->getHand().at(a);
-				  hands.emplace_back(ct.construct(name);)
+				  hands.emplace_back(ct.construct(name));
 			  }
 			  for (int i = 0; i < lines; ++i) {
 				  for (int j = 0; j < handSize; ++j) {
 					  if (hands.at(j).first == Type::Minion) {
-						  std::cout << ct.minions.at(p.second).display();
-					  } else if (p.first == Type::Spell) {
-						  std::cout << display_spell(ct.spells.at(p.second).getName(),
-									     ct.spells.at(p.second).getCost(),
-									     ct.spells.at(p.second).getDescription()).at(i);
-					  } else if (p.first == Type::Enchantment) continue;
-					  else if (p.first == Type::Ritual) continue;
-					  else if (p.first == Type::NA) continue;
+						  std::cout << ct.minions.at(hands.at(j).second).display().at(i);
+					  } else if (hands.at(j).first == Type::Spell) {
+						  std::cout << display_spell(ct.spells.at(hands.at(j).second).getName(),
+									     ct.spells.at(hands.at(j).second).Card::getCost(),
+									     ct.spells.at(hands.at(j).second).getDescription()).at(i);
+					  } else if (hands.at(j).first == Type::Enchantment) continue;
+					  else if (hands.at(j).first == Type::Ritual) continue;
+					  else if (hands.at(j).first == Type::NA) continue;
 				  }
 				  std::cout << endl;
 			  }

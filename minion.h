@@ -2,6 +2,7 @@
 #define MINION_H
 #include "card.h"
 #include "activated.h"
+#include "triggered.h"
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -16,6 +17,7 @@ class Minion final: public Card {
         int atk;
         int def;
         Activated activated;
+        Triggered triggered;
         /*
         int actions;
         std::shared_ptr<Triggered> triggered;
@@ -24,7 +26,7 @@ class Minion final: public Card {
         //std::vector<Enchantment> enchantments;
 
         public:
-        Minion(std::string name, int cost,int atk, int def, Activated activated);
+        Minion(std::string name, int cost,int atk, int def, Activated activated, Triggered triggered);
         //~Minion() override;
         /*
         Minion(std::string name, int cost, int attack, int defense, int actions,
@@ -35,6 +37,7 @@ class Minion final: public Card {
         */
 
         Activated getActivated();
+        Triggered getTriggered();
         void attack(Player& player);
         bool takeDamage(int damage);
         void setDef(int def);

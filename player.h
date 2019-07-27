@@ -8,12 +8,14 @@
 #include "deck.h"
 #include "ritual.h"
 */
+//#include "triggered.h"
 #include <string>
 #include <memory>
 #include <vector>
 
 class Card;
 class Minion;
+enum class Condition;
 
 class Player {
 	std::string name;
@@ -44,15 +46,16 @@ public:
 	void loseHp(int hpLost);
 	int getMagic();
 	void removeHand(int pos);
-	void endTurn();
-	void startTurn();
+	void endTurn(Player& opponent);
+	void startTurn(Player& opponent);
 	void draw();
-	bool play(Minion newM);
+	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
-	void minionToGraveyard(int boardPos);
-	bool resurrect();
-	bool minionToHand(int boardPos);
+	void minionToGraveyard(Player& opponent, int boardPos);
+	bool resurrect(Player& opponent);
+	bool minionToHand(Player& opponent, int boardPos);
 	bool minionDamaged(int pos, int damage);
+	void trigger(Player& opponent, Condition condition, int enterOrExit);
 	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 
 	void displayBoard();
