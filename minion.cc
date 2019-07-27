@@ -57,6 +57,10 @@ void Minion::setDef(int def) {
 	this->def = def;
 }
 
+void Minion::setAtk(int atk) {
+	this->atk = atk;
+}
+
 int Minion::getDef() {
 	return this->def;
 }

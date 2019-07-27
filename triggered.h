@@ -7,12 +7,13 @@ enum class Condition{EndOfTurn, StartOfTurn, MinionEnterPlay, MinionExitPlay};
 
 class Triggered : public Ability {
 	Condition condition;
+	Player *myPlayer;
 public:
-	Triggered(std::string description, Condition condition);
+	Triggered(std::string description, Condition condition, Player *myPlayer);
 	~Triggered() = default;
 	virtual bool usedOn(Player &player) override;
 	virtual bool usedOn(Player &player, int pos) override;
-	bool usedOn(Player &curr, Player &opponent, Minion &owner, Minion &enterOrExit, Condition condition);
+	bool usedOn(Player &player, Minion &owner, int enterOrExit, Condition condition);
 };
 
 

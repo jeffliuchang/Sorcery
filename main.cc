@@ -196,18 +196,20 @@ int main(int argc, char *argv[]) {
 
 		  } else if (next == "board") {
 			  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
-        		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+        		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
         		  cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << endl; //print first line
 
-        		  player1->displayBoardRest(1);
-        		  player1->displayBoard();
+        		  //cout << "start displayBoardRest for 1" << endl;
+        		  player1.displayBoardRest(1);
+        		  //cout << "end displayBoardRest for 1" << endl;
+        		  player1.displayBoard();
         		  int size = CENTRE_GRAPHIC.size();
         		  for (int i = 0; i < size; ++i) cout << CENTRE_GRAPHIC.at(i) << endl;
-        		  player2->displayBoard();
-        		  player2->displayBoardRest(2);
+        		  player2.displayBoard();
+        		  player2.displayBoardRest(2);
 		  
         		  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
-        		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+        		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
         		  cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << endl; // print last line
 		  }
 	  }
