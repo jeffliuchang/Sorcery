@@ -41,6 +41,19 @@ Cardtype::Cardtype() {
 	spells.emplace_back(Spell("Disenchant", "Destroy the top enchantment on target minion", 1));
 	spells.emplace_back(Spell("Raise Dead", "Resurrect the top minion in your graveyard and set its defence to 1", 1));
 	spells.emplace_back(Spell("Blizzard", "Deal 2 damage to all minions", 3));
+	
+	// Assuming Enchantments::Enchantments(std::string name, std::string description, int cost);
+	enchantments.emplace_back(Enchantments("Giant Strength", "", 1));
+	enchantments.emplace_back(Enchantments("Enrage", "", 2));
+	enchantments.emplace_back(Enchantments("Haste", "Enchanted minion gains +1 action each turn", 1));
+	enchantments.emplace_back(Enchantments("Magic Fatigue", "Enchanted minion's activated ability costs 2 more", 0));
+	enchantments.emplace_back(Enchantments("Silence", "Enchanted minion cannot use abilities", 1));
+	
+	// Assuming Rituals::Rituals(std:string name, std::string description, int cost, int charge, int activationCost);
+	rituals.emplace_back(Rituals("Dark Ritual", "At the start of your turn, gain 1 magic", 0, 5, 1));
+	rituals.emplace_back(Rituals("Aura of Power", "Whenever a minion enters play under your control, it gains +1/+1",
+				    1, 4, 1));
+	rituals.emplace_back(Rituals("Standstill", "Whenever a minion enters play, destroy it", 3, 4, 2));
 
 }
 
