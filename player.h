@@ -52,7 +52,8 @@ public:
 	void minionToGraveyard(int boardPos);
 	bool resurrect();
 	bool minionToHand(int boardPos);
-	void minionDamaged(int pos, int damage);
+	bool minionDamaged(int pos, int damage);
+	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 
 	void displayBoard();
 	/*

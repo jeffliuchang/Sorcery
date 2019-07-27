@@ -156,8 +156,8 @@ int main(int argc, char *argv[]) {
 						  played = curr->play(ct.minions.at(p.second));
 					  } else if (p.first == Type::Spell) {
 						  //cout << "play spell" << endl;
-						  if (curr == &player1) ct.spells.at(p.second).usedOn(player1, player2);
-						  else ct.spells.at(p.second).usedOn(player1, player2);
+						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2);
+						  else played = ct.spells.at(p.second).usedOn(player2, player1);
 					  } else if (p.first == Type::Enchantment) {
 					  } else if (p.first == Type::Ritual) {
 					  } else if (p.first == Type::NA) {
@@ -185,9 +185,9 @@ int main(int argc, char *argv[]) {
 							  curr->getBoard().at(mine-1).getActivated().usedOn(player2, yourPos-1);
 						  }
 					  }
+				  } else {
+					  curr->getBoard().at(mine-1).getActivated().usedOn(*curr);
 				  }
-			  } else {
-				  curr->getBoard().at(mine-1).getActivated().usedOn(*curr);
 			  }
 		  } else if (next == "describe") {
 

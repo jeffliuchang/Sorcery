@@ -32,11 +32,19 @@ bool Spell::usedOn(Player &player1, Player &player2) {
 	} else if (getDescription() == "Deal 2 damage to all minions") {
 		int boardSize1 = player1.getBoard().size();
 		int boardSize2 = player2.getBoard().size();
+		int pos = 0;
 		for (int i = 0; i < boardSize1; ++i) {
-			player1.minionDamaged(i, 2);
+			if (player1.minionDamaged(pos,2)) {
+				--pos;
+			}
+			++pos;
 		}
+		pos = 0;
 		for (int j = 0; j < boardSize2; ++j) {
-			player2.minionDamaged(j, 2);
+			if (player2.minionDamaged(pos,2)) {
+				--pos;
+			}
+			++pos;
 		}
 		return true;
 	}

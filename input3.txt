@@ -11,3 +11,21 @@ end
 use 2 2 2
 end
 board
+use 2
+board
+end
+use 2 2 3
+use 2 2 3
+use 2 2 3
+use 2 2 1
+board
+end
+board
+draw
+draw
+play 4
+board
+play 4
+board
+end
+board

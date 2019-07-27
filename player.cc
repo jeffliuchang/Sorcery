@@ -110,19 +110,31 @@ void Player::minionToGraveyard(int boardPos) {
 	board.erase(it);
 }
 
-void Player::minionDamaged(int pos, int damage) {
+bool Player::minionDamaged(int pos, int damage) {
 	bool die;
 	int size = board.size();
 	if (size <= pos) {
 		std::cout << "Victim position out of range." << std::endl;
-		return;
+		return false;
 	}
 	die = board.at(pos).takeDamage(damage);
 	if (die) {
 		minionToGraveyard(pos);
+		return true;
 	}
+	return false;
 }
-
+/*
+std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5) {
+	int size = board.size();
+	int realEnd = size<end ? size : end;
+	std::vector<bool> die;
+	for (int i = start; i < realEnd; i++) {
+		die.emplace_back(board.at(i).takeDamage(damage));
+	}
+	return die;
+}
+*/
 void Player::displayBoard() {
 	std::vector<std::vector<std::string>> myBoard;
 	int boardSize = board.size();
@@ -155,8 +167,11 @@ void Player::displayBoard() {
 }
 
 bool Player::resurrect() {
-	if (board.size() >= 5 or gy.size() < 1) {
-		std::cout << "Invalid use" << std::endl;
+	if (board.size() >= 5) {
+		std::cout << "Board is full" << std::endl;
+		return false;
+	} else if (gy.size() < 1) {
+		std::cout << "No dead minion" << std::endl;
 		return false;
 	}
 	gy.at(0).setDef(1);
