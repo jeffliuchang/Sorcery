@@ -136,53 +136,54 @@ std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5)
 }
 */
 void Player::displayBoard() {
-	std::vector<std::vector<std::string>> myBoard;
-	int boardSize = board.size();
-	for (int i = 0; i < boardSize; ++i) {
-		myBoard.emplace_back(board.at(i).display());
-	}
+        std::vector<std::vector<std::string>> myBoard;
+        int boardSize = board.size();
+        for (int i = 0; i < boardSize; ++i) {
+                myBoard.emplace_back(board.at(i).display());
+        }
 
-	int size = 11;
-	if (boardSize == 0) {
-		for (int a = 0; a < size; ++a) {
-			for (int b = 0; b < 5; ++b) {
-				std::cout << CARD_TEMPLATE_BORDER[a];
-			}
-			std::cout << std::endl;
-		}
-		return;
-	}
-	for (int a = 0; a < size; ++a) {
-		int size2 = myBoard.size();
-		for (int j = 0; j < size2; ++j) {
-			std::cout << myBoard.at(j).at(a);
-			if (j == size2 - 1) {
-				for (int b = 0; b < (5 - size2); ++b) {
-					std::cout << CARD_TEMPLATE_BORDER[a];
-				}
-				std::cout << std::endl;
-			}
-		}
-	}
+        int size = 11;
+        if (boardSize == 0) {
+                for (int a = 0; a < size; ++a) {
+                        std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
+                        for (int b = 0; b < 5; ++b) {
+                                std::cout << CARD_TEMPLATE_BORDER[a];
+                        }
+                        std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT << std::endl;
+                }
+                return;
+        }
+        for (int a = 0; a < size; ++a) {
+                int size2 = myBoard.size();
+                std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
+                for (int j = 0; j < size2; ++j) {
+                        std::cout << myBoard.at(j).at(a);
+                        if (j == size2 - 1) {
+                                for (int b = 0; b < (5 - size2); ++b) {
+                                        std::cout << CARD_TEMPLATE_BORDER[a];
+                                }
+                                std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT << std::endl;
+                        }
+                }
+        }
 }
 
 void Player::displayBoardRest(int playerNum) {
-	std::vector<std::vector<std::string>> myBoard;
-	//int boardSize = board.size();
-	card_template_t player = display_player_card(playerNum, name, hp, magic);
-	card_template_t grave = gy.at(0).display();
+        card_template_t player = display_player_card(playerNum, name, hp, magic);
+        card_template_t grave = gy.at(0).display();
 
-	int lines = 11;
-	int blocks = 5;
-	for (int a = 0; a < lines; ++a) {
-		for (int b = 0; b < blocks; ++b) {
-			if (b == 0) std::cout << CARD_TEMPLATE_BORDER[a];
-			else if ((b == 1) || (b == 3)) std::cout << CARD_TEMPLATE_EMPTY[a];
-			else if (b == 2) std::cout << player.at(a);
-			else if (b == 5) std::cout << grave.at(a);
-		}
-		std::cout << std::endl;
-	}
+        int lines = 11;
+        int blocks = 5;
+        for (int a = 0; a < lines; ++a) {
+                std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
+                for (int b = 0; b < blocks; ++b) {
+                        if (b == 0) std::cout << CARD_TEMPLATE_BORDER[a];
+                        else if ((b == 1) || (b == 3)) std::cout << CARD_TEMPLATE_EMPTY[a];
+                        else if (b == 2) std::cout << player.at(a);
+                        else if (b == 5) std::cout << grave.at(a);
+                }
+                std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT << std::endl;
+        }
 }
 
 
