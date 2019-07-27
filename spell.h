@@ -13,7 +13,7 @@ class Spell final : public Card, public Activated {
         Spell(std::string name, std::string description, int cost);
     	virtual bool usedOn(Player &player) override;
     	virtual bool usedOn(Player &player, int pos) override;
-    	bool usedOn(Player &player1, Player &player2);
+    	bool usedOn(Player &player1, Player &player2, int pos);
 };
 
 

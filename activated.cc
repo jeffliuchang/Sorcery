@@ -10,22 +10,30 @@ int Activated::getCost() {
 	return actCost;
 }
 
-bool Activated::usedOn(Player &player) {
+bool Activated::usedOn(Player &player1, Player &player2, int pos) {
 	Cardtype ct{};
 	if (getDescription() == "Summon a 1/1 air elemental") {
-		return player.play(ct.minions.at(0));
+		return player1.play(player2, ct.minions.at(0));
 	} else if (getDescription() == "Summon up to three 1/1 air elementals") {
-		player.play(ct.minions.at(0));
-		player.play(ct.minions.at(0));
-		return player.play(ct.minions.at(0));
+		player1.play(player2, ct.minions.at(0));
+		player1.play(player2, ct.minions.at(0));
+		return player1.play(player2, ct.minions.at(0));
+	} else if (getDescription() == "Deal 1 damage to target minion") {
+		int position = pos;
+		player1.minionDamaged(player2, position ,1);
+		return true;
 	}
 	return false;
 }
 
 bool Activated::usedOn(Player &player, int pos) {
+	/*
 	if (getDescription() == "Deal 1 damage to target minion") {
 		player.minionDamaged(pos,1);
 		return true;
 	}
+	*/
 	return false;
 }
+
+bool Activated::usedOn(Player &player) {return false;}

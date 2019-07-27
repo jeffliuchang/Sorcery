@@ -71,14 +71,14 @@ void Player::endTurn(Player& opponent) {
 	std::cout << getName() << " ends turn" << std::endl;
 	std::cout << "hp: " << getHp() << std::endl;
 	std::cout << "magic: " << getMagic() << std::endl;
-	trigger(opponent, Condition::EndOfTurn);
+	trigger(opponent, Condition::EndOfTurn,-1);
 }
 
-void Player::startTurn(Player& opponent, Player& opponent) {
+void Player::startTurn(Player& opponent) {
 	std::cout << getName() << " starts turn" << std::endl;
 	this->draw();
 	magic++;
-	trigger(opponent, Condition::StartOfTurn);
+	trigger(opponent, Condition::StartOfTurn,-1);
 }
 
 void Player::draw() {
@@ -113,10 +113,10 @@ void Player::minionToGraveyard(Player& opponent, int boardPos) {
 	auto it = board.begin();
 	for (int i = 0; i < boardPos; ++i) { ++it; }
 	board.erase(it);
-	trigger(opponent,Condition::MinionExitPlay);
+	trigger(opponent,Condition::MinionExitPlay,-1);
 }
 
-bool Player::minionDamaged(int pos, int damage) {
+bool Player::minionDamaged(Player& opponent, int pos, int damage) {
 	bool die;
 	int size = board.size();
 	if (size <= pos) {
@@ -125,7 +125,7 @@ bool Player::minionDamaged(int pos, int damage) {
 	}
 	die = board.at(pos).takeDamage(damage);
 	if (die) {
-		minionToGraveyard(pos);
+		minionToGraveyard(opponent, pos);
 		return true;
 	}
 	return false;
@@ -230,17 +230,19 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 		for (int i = 0; i < boardPos; ++it) { ++i; }
 		board.erase(it);
 	}
-	trigger(opponent,Condition::MinionExitPlay);
+	trigger(opponent,Condition::MinionExitPlay, -1);
 	return true;
 
 }
 
 void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
+	std::cout << "hit trigger" << std::endl;
 	int size = board.size();
 	int pos = 0;
 	for (int i = 0; i < size; ++i) {
 		bool die = board.at(i).getTriggered().usedOn(*this,board.at(pos),enterOrExit,condition);
 		if (die) {
+			std::cout << "something dies" << std::endl;
 			if (i == enterOrExit) {
 				--pos;
 			} else {
@@ -249,8 +251,9 @@ void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1
 		}
 		++pos;
 	}
-
+	std::cout << "loop ends" << std::endl;
 	int opponentSize = opponent.getBoard().size();
+	std::cout << "opponent board size is " << opponentSize << std::endl;
 	pos = 0;
 	for (int i = 0; i < opponentSize; ++i) {
 		bool die = opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent.getBoard().at(pos),enterOrExit,condition);

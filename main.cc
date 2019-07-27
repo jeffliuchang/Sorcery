@@ -82,9 +82,14 @@ int main(int argc, char *argv[]) {
 	  	  }
 */
 	  Player *curr = &player1;
+	  Player *opponent = &player2;
 
 	  while (overwrite(init,cin,cmd)) {
-		  if (curr == &player1)
+		  if (curr == &player1) {
+			  opponent = &player2;
+		  } else {
+			  opponent = &player1;
+		  }
 		  cout << cmd << endl;
 		  istringstream line(cmd);
 		  string next;
@@ -92,9 +97,9 @@ int main(int argc, char *argv[]) {
 		  if (next == "help") {
 
 		  } else if (next == "end") {
-			  curr->endTurn();
+			  curr->endTurn(*opponent);
 			  updateCurr(curr,&player1,&player2);
-			  curr->startTurn();
+			  curr->startTurn(*opponent);
 		  } else if (next == "quit") {
 
 		  } else if (next == "draw") {
@@ -108,13 +113,13 @@ int main(int argc, char *argv[]) {
 					  if (curr == &player1) {
 						  int takeDamage = player2.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player1.getBoard().at(attacker-1).getAtk();
-						  curr->minionDamaged(attacker-1,takeDamage);
-						  player2.minionDamaged(victim-1, dealDamage);
+						  curr->minionDamaged(player2,attacker-1,takeDamage);
+						  player2.minionDamaged(player1,victim-1, dealDamage);
 					  } else {
 						  int takeDamage = player1.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player2.getBoard().at(attacker-1).getAtk();
-						  curr->minionDamaged(attacker-1,takeDamage);
-						  player1.minionDamaged(victim-1, dealDamage);
+						  curr->minionDamaged(player1,attacker-1,takeDamage);
+						  player1.minionDamaged(player2,victim-1, dealDamage);
 					  }
 				  } else {
 					  std::cout << "reach 1" << std::endl;
@@ -145,7 +150,7 @@ int main(int argc, char *argv[]) {
 
 					  if (p.first == Type::Minion) {
 					  } else if (p.first == Type::Spell) {
-						  played = ct.spells.at(p.second).usedOn(*target, yourPos-1);
+						  played = ct.spells.at(p.second).usedOn(*target, *opponent, yourPos-1);
 
 					  } else if (p.first == Type::Enchantment) {
 					  } else if (p.first == Type::Ritual) {
@@ -154,12 +159,14 @@ int main(int argc, char *argv[]) {
 				  } else {
 					  //cout << "got here" << endl;
 					  if (p.first == Type::Minion) {
-						  //cout << "play minion" << endl;
-						  played = curr->play(ct.minions.at(p.second));
+						  cout << "play minion" << endl;
+						  cout << "curr is "<< curr->getName() << endl;
+						  cout << "opponent is " << opponent->getName() << endl;
+						  played = curr->play(*opponent, ct.minions.at(p.second));
 					  } else if (p.first == Type::Spell) {
 						  //cout << "play spell" << endl;
-						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2);
-						  else played = ct.spells.at(p.second).usedOn(player2, player1);
+						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
+						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
 					  } else if (p.first == Type::Enchantment) {
 					  } else if (p.first == Type::Ritual) {
 					  } else if (p.first == Type::NA) {
@@ -174,21 +181,21 @@ int main(int argc, char *argv[]) {
 				  if ((line >> player) && (line >> yours)) {
 					  if (yours == "r") {
 						  if (player == 1) {
-							  curr->getBoard().at(mine-1).getActivated().usedOn(player1);
+							  //curr->getBoard().at(mine-1).getActivated().usedOn(player1,player2);
 						  } else {
-							  curr->getBoard().at(mine-1).getActivated().usedOn(player2);
+							  //curr->getBoard().at(mine-1).getActivated().usedOn(player2,player2);
 						  }
 					  } else {
 						  istringstream pos(yours);
 						  pos >> yourPos;
 						  if (player == 1) {
-							  curr->getBoard().at(mine-1).getActivated().usedOn(player1, yourPos-1);
+							  curr->getBoard().at(mine-1).getActivated().usedOn(player1, player2, yourPos-1);
 						  } else {
-							  curr->getBoard().at(mine-1).getActivated().usedOn(player2, yourPos-1);
+							  curr->getBoard().at(mine-1).getActivated().usedOn(player2, player1, yourPos-1);
 						  }
 					  }
 				  } else {
-					  curr->getBoard().at(mine-1).getActivated().usedOn(*curr);
+					  curr->getBoard().at(mine-1).getActivated().usedOn(*curr,*opponent,-1);
 				  }
 			  }
 		  } else if (next == "describe") {
