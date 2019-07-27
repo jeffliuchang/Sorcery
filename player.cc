@@ -130,6 +130,16 @@ bool Player::minionDamaged(Player& opponent, int pos, int damage) {
 	}
 	return false;
 }
+
+bool Player::hasMinion(Minion &minion) {
+	int size = board.size();
+	for (int i = 0; i < size; i++) {
+		if (&board.at(i) == &minion) {
+			return true;
+		}
+	}
+	return false;
+}
 /*
 std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5) {
 	int size = board.size();
@@ -142,36 +152,36 @@ std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5)
 }
 */
 void Player::displayBoard() {
-        std::vector<std::vector<std::string>> myBoard;
-        int boardSize = board.size();
-        for (int i = 0; i < boardSize; ++i) {
-                myBoard.emplace_back(board.at(i).display());
-        }
+	std::vector<std::vector<std::string>> myBoard;
+	int boardSize = board.size();
+	for (int i = 0; i < boardSize; ++i) {
+		myBoard.emplace_back(board.at(i).display());
+	}
 
-        int size = 11;
-        if (boardSize == 0) {
-                for (int a = 0; a < size; ++a) {
-                        std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
-                        for (int b = 0; b < 5; ++b) {
-                                std::cout << CARD_TEMPLATE_BORDER[a];
-                        }
-                        std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN << std::endl;
-                }
-                return;
-        }
-        for (int a = 0; a < size; ++a) {
-                int size2 = myBoard.size();
-                std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
-                for (int j = 0; j < size2; ++j) {
-                        std::cout << myBoard.at(j).at(a);
-                        if (j == size2 - 1) {
-                                for (int b = 0; b < (5 - size2); ++b) {
-                                        std::cout << CARD_TEMPLATE_BORDER[a];
-                                }
-                                std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN << std::endl;
-                        }
-                }
-        }
+	int size = 11;
+	if (boardSize == 0) {
+		for (int a = 0; a < size; ++a) {
+			std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+			for (int b = 0; b < 5; ++b) {
+				std::cout << CARD_TEMPLATE_BORDER[a];
+			}
+			std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN << std::endl;
+		}
+		return;
+	}
+	for (int a = 0; a < size; ++a) {
+		int size2 = myBoard.size();
+		std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+		for (int j = 0; j < size2; ++j) {
+			std::cout << myBoard.at(j).at(a);
+			if (j == size2 - 1) {
+				for (int b = 0; b < (5 - size2); ++b) {
+					std::cout << CARD_TEMPLATE_BORDER[a];
+				}
+				std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN << std::endl;
+			}
+		}
+	}
 }
 
 void Player::displayBoardRest(int playerNum) {
@@ -236,11 +246,11 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 }
 
 void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
-	std::cout << "hit trigger" << std::endl;
+	//std::cout << "hit trigger" << std::endl;
 	int size = board.size();
 	int pos = 0;
 	for (int i = 0; i < size; ++i) {
-		bool die = board.at(i).getTriggered().usedOn(*this,board.at(pos),enterOrExit,condition);
+		bool die = board.at(i).getTriggered().usedOn(*this,opponent,board.at(pos),enterOrExit,condition);
 		if (die) {
 			std::cout << "something dies" << std::endl;
 			if (i == enterOrExit) {
@@ -251,12 +261,12 @@ void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1
 		}
 		++pos;
 	}
-	std::cout << "loop ends" << std::endl;
+	//std::cout << "loop ends" << std::endl;
 	int opponentSize = opponent.getBoard().size();
-	std::cout << "opponent board size is " << opponentSize << std::endl;
+	//std::cout << "opponent board size is " << opponentSize << std::endl;
 	pos = 0;
 	for (int i = 0; i < opponentSize; ++i) {
-		bool die = opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent.getBoard().at(pos),enterOrExit,condition);
+		bool die = opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent,opponent.getBoard().at(pos),enterOrExit,condition);
 		if (die) {
 			if (i == enterOrExit) {
 				--pos;

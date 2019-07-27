@@ -43,6 +43,7 @@ Cardtype::Cardtype() {
 	spells.emplace_back(Spell("Blizzard", "Deal 2 damage to all minions", 3));
 	
 	// Assuming Enchantments::Enchantments(std::string name, std::string description, int cost);
+	/*
 	enchantments.emplace_back(Enchantments("Giant Strength", "", 1));
 	enchantments.emplace_back(Enchantments("Enrage", "", 2));
 	enchantments.emplace_back(Enchantments("Haste", "Enchanted minion gains +1 action each turn", 1));
@@ -54,7 +55,7 @@ Cardtype::Cardtype() {
 	rituals.emplace_back(Rituals("Aura of Power", "Whenever a minion enters play under your control, it gains +1/+1",
 				    1, 4, 1));
 	rituals.emplace_back(Rituals("Standstill", "Whenever a minion enters play, destroy it", 3, 4, 2));
-
+*/
 }
 
 std::pair<Type,int> Cardtype::construct(std::string name) {

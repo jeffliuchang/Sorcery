@@ -11,7 +11,7 @@ end
 use 2 2 2
 end
 board
-use 2
+use 1
 board
 end
 use 2 2 3

@@ -159,9 +159,9 @@ int main(int argc, char *argv[]) {
 				  } else {
 					  //cout << "got here" << endl;
 					  if (p.first == Type::Minion) {
-						  cout << "play minion" << endl;
-						  cout << "curr is "<< curr->getName() << endl;
-						  cout << "opponent is " << opponent->getName() << endl;
+						  //cout << "play minion" << endl;
+						  //cout << "curr is "<< curr->getName() << endl;
+						  //cout << "opponent is " << opponent->getName() << endl;
 						  played = curr->play(*opponent, ct.minions.at(p.second));
 					  } else if (p.first == Type::Spell) {
 						  //cout << "play spell" << endl;
