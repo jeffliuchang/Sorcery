@@ -103,6 +103,7 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "quit") {
 
 		  } else if (next == "draw") {
+			  curr->draw();
 
 		  } else if (next == "discard") {
 
@@ -184,6 +185,7 @@ int main(int argc, char *argv[]) {
 			  int mine, player, yourPos;
 			  string yours;
 			  if (line >> mine) {
+				  if (curr->checkSilenced(mine)) continue;
 				  if ((line >> player) && (line >> yours)) {
 					  if (yours == "r") {
 						  if (player == 1) {
