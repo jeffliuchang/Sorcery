@@ -22,7 +22,7 @@ bool Ritual::usedOn(Player &player1, Player &player2, int owner, int boardPos, i
 
 	} else if (getDescription() == "Whenever a minion enters play, destroy it") {
 		if (condition == Condition::MinionEnterPlay) {
-
+			player1.minionToGraveyard(player2,enterOrExit);
 		}
 	}
 	return false;
