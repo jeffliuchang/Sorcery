@@ -7,6 +7,7 @@ class Activated : public Ability {
 	int actCost;
 public:
 	Activated(std::string description, int cost);
+	Activated(const Activated& other);
 	virtual ~Activated() = default;
 	int getCost();
 	virtual bool usedOn(Player &player) override;
