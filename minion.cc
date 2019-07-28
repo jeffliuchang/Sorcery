@@ -30,6 +30,11 @@ Activated Minion::getActivated() {
 Triggered Minion::getTriggered() {
 	return triggered;
 }
+
+vector<Enchantment> Minion::getEnchants() {
+        return myEnchants;
+}
+
 void Minion::attack(Player& player) {
 	player.loseHp(atk);
 }
