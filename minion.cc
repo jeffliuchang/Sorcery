@@ -22,7 +22,7 @@ void Minion::attack(Minion& minion) {
 
 Minion::Minion(std::string name, int cost,
 		int atk, int def, Activated activated, Triggered triggered)
-:Card(name,cost),atk(atk),def(def), activated(activated), triggered(triggered), actions{0}, maxActions{1}{}
+:Card(name,cost),atk(atk),def(def), activated(activated), triggered(triggered), actions(0), maxActions(1), silenced(false){}
 
 Activated Minion::getActivated() {
 	return activated;
@@ -77,6 +77,10 @@ int Minion::getDef() {
 
 int Minion::getAtk() {
 	return this->atk;
+}
+
+bool Minion::getSilenced() {
+	return silenced;
 }
 
 void Minion::addEnch(Enchantment newE) {
