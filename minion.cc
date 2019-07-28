@@ -97,7 +97,7 @@ void Minion::addEnch(Enchantment newE) {
                 activated.setCost(activated.getCost() + 2);
         } else if (newE.getName() == "Silence") {
         		Cardtype ct();
-                activated = ct.triggered.at(3);
+                silenced = true;
         }
 }
 
@@ -139,7 +139,9 @@ bool Minion::removeEnch(int pos) {
                 activated.setCost(oriCost);
                 return false;
         } else if (eName == "Silence") {
-                activated = ct.minions.at(p.second).getActivated();
+                for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
+                for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
+		silenced = tempM.getSilenced();
                 return false;
         }
 
