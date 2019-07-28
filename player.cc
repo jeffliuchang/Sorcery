@@ -61,6 +61,10 @@ int Player::getMagic() {
 	return magic;
 }
 
+void Player::gainMagic(int gain) {
+	magic += gain;
+}
+
 void Player::removeHand(int pos) {
 	//std::cout << "printing first two cards before erase: " << std::endl;
 	//for (int j = 0; j < 2; ++j) std::cout << hand.at(j) << std::endl;

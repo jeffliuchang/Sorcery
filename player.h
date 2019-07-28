@@ -46,6 +46,7 @@ public:
 	int getHp();
 	void loseHp(int hpLost);
 	int getMagic();
+	void gainMagic(int gain);
 	void removeHand(int pos);
 	void endTurn(Player& opponent);
 	void startTurn(Player& opponent);
