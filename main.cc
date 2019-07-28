@@ -151,10 +151,14 @@ int main(int argc, char *argv[]) {
 					  if (p.first == Type::Minion) {
 					  } else if (p.first == Type::Spell) {
 						  played = ct.spells.at(p.second).usedOn(*target, *opponent, yourPos-1);
-
+						  
 					  } else if (p.first == Type::Enchantment) {
+						  if (player == 1) player1.enchantMinion(yourPos, ct.enchantments.at(p.second));
+						  else player2.enchantMinion(yourPos, ct.enchantments.at(p.second));
+						  
 					  } else if (p.first == Type::Ritual) {
 					  } else if (p.first == Type::NA) {
+						  cout << "The given name does not match any card." << endl;
 					  }
 				  } else {
 					  //cout << "got here" << endl;s
@@ -169,9 +173,9 @@ int main(int argc, char *argv[]) {
 						  //cout << p.second << endl;
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
-					  } else if (p.first == Type::Enchantment) {
 					  } else if (p.first == Type::Ritual) {
 					  } else if (p.first == Type::NA) {
+						  cout << "The given name does not match any card." << endl;
 					  }
 				  }
 				  if (played) curr->removeHand(mine-1);
