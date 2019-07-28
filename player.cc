@@ -211,6 +211,32 @@ void Player::displayBoardRest(int playerNum) {
 	}
 }
 
+void Player::inspectMinion(int pos) {
+        board.at(pos).display();
+
+        vector<Enchantment> enchants = board.at(pos).getEnchants();
+        string name;
+        int ith = 0;
+        for (int i = 0; i < myEnchants.size(); ++i) {
+                ith ++;
+                name = enchants.at(i).getName();
+                if (name == "Giant Strength") {
+                        display_enchantment_attack_defence(name, enchants.at(i).getCost(),
+                                        enchants.at(i).getDes(), "+2", "+2");
+                } else if (name == "Enrage") {
+                        display_enchantment_attack_defence(name, enchants.at(i).getCost(),
+                                        enchants.at(i).getDes(), "*2", "*2");
+                } else {
+                        display_enchantment(name, enchants.at(i).getCost(), enchants.at(i).getDes());
+                }
+                if (ith == 5) {
+                        std::cout << std::endl;
+                        ith = 0;
+                }
+        }
+}
+
+
 
 bool Player::resurrect(Player& opponent) {
 	if (board.size() >= 5) {
