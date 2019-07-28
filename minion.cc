@@ -4,6 +4,7 @@
 #include "player.h"
 #include "card.h"
 #include "ascii_graphics.h"
+#include "cardtype.h"
 /*
 Minion::Minion(std::string name, int cost, int attack, int defense, int actions,
 		std::shared_ptr<Triggered> triggered, std::shared_ptr<Activated> activated)
@@ -20,7 +21,7 @@ void Minion::attack(Minion& minion) {
 
 Minion::Minion(std::string name, int cost,
 		int atk, int def, Activated activated, Triggered triggered)
-:Card(name,cost),atk(atk),def(def), activated(activated), triggered(triggered) {}
+:Card(name,cost),atk(atk),def(def), activated(activated), triggered(triggered), actions{0}, maxActions{1}{}
 
 Activated Minion::getActivated() {
 	return activated;
@@ -71,3 +72,78 @@ int Minion::getDef() {
 int Minion::getAtk() {
 	return this->atk;
 }
+
+void Minion::addEnch(Enchantment newE) {
+        myEnchants.emplace_back(newE);
+        if (newE.getName() == "Giant Strength") {
+                atk += 2;
+                def += 2;
+        } else if (newE.getName() = "Enrage") {
+                atk *= 2;
+                def *= 2;
+        } else if (newE.getName() = "Haste") {
+                maxActions +=1;
+        } else if (newE.getName() = "Magic Fatigue") {
+                activated.setCost(activated.getCost() + 2);
+        } else if (newE.getName() = "Silence") {
+                activated = ct.triggered.at(3);
+        }
+}
+
+bool Minion::removeEnch(int pos) {
+        Cardtype ct{};
+        string eName = myEnchants.at(pos).getName();
+        std::pair<Type,int> p = ct.construct(getName());
+        int enchSize = myEnchants.size();
+
+        Minion tempM = ct.minions.at(p.second);
+        int oriAtk = ct.minions.at(p.second).getAtk();
+        int oriDef = ct.minions.at(p.second).getDef();
+        int oriCost = ct.minions.at(p.second).getActivated().getCost();
+        if (eName == "Giant Strength") {
+                for (int i = 0; i < enchSize; ++i) tempM.addEnch(myEnchants.at(i));
+                int hurted = temp.getDef() - def;
+                tempM.setAtk(oriAtk);
+                tempM.setDef(oriDef);
+                for (int a = 0; a < pos; ++i) tempM.addEnch(myEnchants.at(a));
+                for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
+                atk = tempM.getAtk();
+                def = tempM.getDef() - hurted;
+                if (def <= 0) return true;
+        } else if (eName == "Enrage") {
+                for (int i = 0; i < enchSize; ++i) tempM.addEnch(myEnchants.at(i));
+                int hurted = temp.getDef() - def;
+                tempM.setAtk(oriAtk);
+                tempM.setDef(oriDef);
+                for (int a = 0; a < pos; ++i) tempM.addEnch(myEnchants.at(a));
+                for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
+                atk = tempM.getAtk();
+                def = tempM.getDef() - hurted;
+                if (def <= 0) return true;
+        } else if (eName == "Haste") {
+                maxActions -= 1;
+                return false;
+        } else if (eName == "Magic Fatigue") {
+                int oriCost = ct.minions.at(p.second).getActivated().getCost();
+                activated.setCost(oriCost);
+                return false;
+        } else if (eName == "Silence") {
+                activated = ct.minions.at(p.second).getActivated();
+                return false;
+        }
+
+        std::vector<Enchantment>::iterator it = myEnchants.begin();
+        for (int i = 0; i < pos; ++it) { ++i; }
+        myEnchants.erase(it);
+}
+
+bool Minion::removeAllEnch() {
+        bool died = false;
+        for (int i = myEnchants.size() - 1; i >= 0; --i) {
+                if (removeEnch(i)) died = true;
+        }
+        return died;
+}
+
+
+
