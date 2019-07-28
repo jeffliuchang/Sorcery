@@ -22,7 +22,7 @@ void Minion::attack(Minion& minion) {
 
 Minion::Minion(std::string name, int cost,
 		int atk, int def, Activated activated, Triggered triggered)
-:Card(name,cost),atk(atk),def(def), activated(activated), triggered(triggered), actions(0), maxActions(1), silenced(false){}
+:Card(name,cost),atk(atk),def(def),actions(0), maxActions(1), silenced(false), activated(activated), triggered(triggered){}
 
 Activated Minion::getActivated() {
 	return activated;
@@ -110,7 +110,9 @@ bool Minion::removeEnch(int pos) {
         Minion tempM = ct.minions.at(p.second);
         int oriAtk = ct.minions.at(p.second).getAtk();
         int oriDef = ct.minions.at(p.second).getDef();
-        int oriCost = ct.minions.at(p.second).getActivated().getCost();
+        bool dead = false;
+        //int oriCost = ct.minions.at(p.second).getActivated().getCost();
+
         if (eName == "Giant Strength") {
                 for (int i = 0; i < enchSize; ++i) tempM.addEnch(myEnchants.at(i));
                 int hurted = tempM.getDef() - def;
@@ -120,7 +122,7 @@ bool Minion::removeEnch(int pos) {
                 for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
                 atk = tempM.getAtk();
                 def = tempM.getDef() - hurted;
-                if (def <= 0) return true;
+                if (def <= 0) dead = true;
         } else if (eName == "Enrage") {
                 for (int i = 0; i < enchSize; ++i) tempM.addEnch(myEnchants.at(i));
                 int hurted = tempM.getDef() - def;
@@ -130,24 +132,22 @@ bool Minion::removeEnch(int pos) {
                 for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
                 atk = tempM.getAtk();
                 def = tempM.getDef() - hurted;
-                if (def <= 0) return true;
+                if (def <= 0) dead = true;
         } else if (eName == "Haste") {
                 maxActions -= 1;
-                return false;
         } else if (eName == "Magic Fatigue") {
                 int oriCost = ct.minions.at(p.second).getActivated().getCost();
                 activated.setCost(oriCost);
-                return false;
         } else if (eName == "Silence") {
                 for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
                 for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
 		silenced = tempM.getSilenced();
-                return false;
         }
 
         std::vector<Enchantment>::iterator it = myEnchants.begin();
         for (int i = 0; i < pos; ++it) { ++i; }
         myEnchants.erase(it);
+        return dead;
 }
 
 bool Minion::removeAllEnch() {

@@ -55,7 +55,6 @@ public:
 	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
 	void minionToGraveyard(Player& opponent, int boardPos);
-	void handToGraveyard(int handPos);
 	bool resurrect(Player& opponent);
 	bool minionToHand(Player& opponent, int boardPos);
 	bool minionDamaged(Player& opponent, int pos, int damage);

@@ -275,21 +275,20 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 		std::cout << "Target hand is full, cannot use this spell." << std::endl;
 		return false;
 	} else {
+		if (board.at(boardPos).removeAllEnch()) {
+			minionToGraveyard(opponent,boardPos);
+			return false;
+		}
 		hand.emplace_back(board.at(boardPos).getName());
 		std::vector<Minion>::iterator it = board.begin();
 		for (int i = 0; i < boardPos; ++it) { ++i; }
 		board.erase(it);
-		if (hand.at(hand.size()-1).removeAllEnch()) handToGraveyard(hand.size()-1);
 	}
 	trigger(opponent,Condition::MinionExitPlay, -1);
 	return true;
 
 }
 
-void Player::handToGraveyard(int handPos) {
-        gy.emplace(gy.begin(),hand.at(handPos));
-        hand.erase(hand.end());
-}
 
 void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
 	int size = board.size();

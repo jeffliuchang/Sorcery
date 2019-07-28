@@ -8,7 +8,6 @@
 #include <vector>
 #include <memory>
 
-class Triggered;
 class Ability;
 class Player;
 
