@@ -110,6 +110,7 @@ void Player::attack(int attacker, Player& player){
 
 void Player::minionToGraveyard(Player& opponent, int boardPos) {
 	gy.emplace(gy.begin(),board.at(boardPos));
+	gy.at(0).removeAllEnch();
 	auto it = board.begin();
 	for (int i = 0; i < boardPos; ++i) { ++it; }
 	board.erase(it);
@@ -137,6 +138,10 @@ void Player::buffMinion(int boardPos, int atkBuff, int defBuff) {
 	board.at(boardPos).setAtk(atk+atkBuff);
 	int def = board.at(boardPos).getDef();
 	board.at(boardPos).setDef(def+defBuff);
+}
+
+void Player::enchantMinion(int pos, Enchantment e) {
+        board.at(pos).addEnch(e);
 }
 /*
 std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5) {
@@ -237,10 +242,16 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 		std::vector<Minion>::iterator it = board.begin();
 		for (int i = 0; i < boardPos; ++it) { ++i; }
 		board.erase(it);
+		if (hand.at(hand.size()-1).removeAllEnch()) handToGraveyard(hand.size()-1);
 	}
 	trigger(opponent,Condition::MinionExitPlay, -1);
 	return true;
 
+}
+
+void Player::handToGraveyard(int handPos) {
+        gy.emplace(gy.begin(),hand.at(handPos));
+        hand.erase(hand.end());
 }
 
 void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
