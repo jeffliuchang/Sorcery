@@ -1,6 +1,7 @@
 #include "spell.h"
 #include "player.h"
 #include "minion.h"
+#include "enchantment.h"
 
 Spell::Spell(std::string name, std::string description, int cost)
 :Card(name, cost), Activated(description, cost){}

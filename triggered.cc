@@ -1,6 +1,7 @@
 #include "triggered.h"
 #include "minion.h"
 #include "player.h"
+#include "enchantment.h"
 
 Triggered::Triggered(std::string description, Condition condition)
 :Ability(description), condition(condition) {}

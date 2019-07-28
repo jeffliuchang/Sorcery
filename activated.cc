@@ -1,3 +1,4 @@
+#include "ability.h"
 #include "activated.h"
 #include "minion.h"
 #include "player.h"
@@ -7,7 +8,7 @@ Activated::Activated(std::string description, int cost)
 	:Ability(description),actCost(cost) {}
 
 Activated::Activated(const Activated& other)
-	:Ability(other.getDescription(), other.getCost(){}
+	:Ability(other.getDescription()), cost(other.getCost()) {}
 
 
 int Activated::getCost() {

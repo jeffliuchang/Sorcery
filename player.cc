@@ -4,6 +4,8 @@
 #include "spell.h"
 #include "ascii_graphics.h"
 #include "triggered.h"
+#include "enchantment.h"
+#include "ritual.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>

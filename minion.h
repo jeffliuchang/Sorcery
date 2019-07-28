@@ -18,7 +18,7 @@ class Minion final: public Card {
         int def;
         int actions;
         int maxActions;
-        vector<Enchantment> myEnchants;
+        std::vector<Enchantment> myEnchants;
         Activated activated;
         Triggered triggered;
         /*
@@ -41,7 +41,7 @@ class Minion final: public Card {
 
         Activated getActivated();
         Triggered getTriggered();
-        vector<Enchantment> getEnchants();
+        std::vector<Enchantment> getEnchants();
         void attack(Player& player);
         bool takeDamage(int damage);
         void setDef(int defence);

@@ -15,6 +15,7 @@
 
 class Card;
 class Minion;
+class Enchantment;
 enum class Condition;
 
 class Player {
