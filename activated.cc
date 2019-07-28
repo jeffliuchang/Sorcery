@@ -7,12 +7,14 @@
 Activated::Activated(std::string description, int cost)
 	:Ability(description),actCost(cost) {}
 
-Activated::Activated(const Activated& other)
-	:Ability(other.getDescription()), cost(other.getCost()) {}
 
 
 int Activated::getCost() {
 	return actCost;
+}
+
+void Activated::setCost(int cost) {
+	this->actCost = cost;
 }
 
 bool Activated::usedOn(Player &player1, Player &player2, int pos) {

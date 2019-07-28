@@ -3,6 +3,7 @@
 #include "card.h"
 #include "activated.h"
 #include "triggered.h"
+#include "enchantment.h"
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -10,7 +11,7 @@
 class Triggered;
 class Ability;
 class Player;
-class Enchantment;
+
 
 
 class Minion final: public Card {

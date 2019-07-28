@@ -216,10 +216,11 @@ void Player::displayBoardRest(int playerNum) {
 void Player::inspectMinion(int pos) {
         board.at(pos).display();
 
-        vector<Enchantment> enchants = board.at(pos).getEnchants();
-        string name;
+        std::vector<Enchantment> enchants = board.at(pos).getEnchants();
+        std::string name;
         int ith = 0;
-        for (int i = 0; i < myEnchants.size(); ++i) {
+        int size = enchants.size();
+        for (int i = 0; i < size; ++i) {
                 ith ++;
                 name = enchants.at(i).getName();
                 if (name == "Giant Strength") {

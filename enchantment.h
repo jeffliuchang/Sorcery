@@ -12,7 +12,7 @@ class Enchantment final : public Card {
 	std::string description;
 public:
 	Enchantment(std::string name, std::string description, int cost);
-
+	std::string getDes();
 };
 
 #endif

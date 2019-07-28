@@ -5,6 +5,7 @@
 #include "card.h"
 #include "ascii_graphics.h"
 #include "cardtype.h"
+#include "enchantment.h"
 /*
 Minion::Minion(std::string name, int cost, int attack, int defense, int actions,
 		std::shared_ptr<Triggered> triggered, std::shared_ptr<Activated> activated)
@@ -31,7 +32,7 @@ Triggered Minion::getTriggered() {
 	return triggered;
 }
 
-vector<Enchantment> Minion::getEnchants() {
+std::vector<Enchantment> Minion::getEnchants() {
         return myEnchants;
 }
 
@@ -83,21 +84,22 @@ void Minion::addEnch(Enchantment newE) {
         if (newE.getName() == "Giant Strength") {
                 atk += 2;
                 def += 2;
-        } else if (newE.getName() = "Enrage") {
+        } else if (newE.getName() == "Enrage") {
                 atk *= 2;
                 def *= 2;
-        } else if (newE.getName() = "Haste") {
+        } else if (newE.getName() == "Haste") {
                 maxActions +=1;
-        } else if (newE.getName() = "Magic Fatigue") {
+        } else if (newE.getName() == "Magic Fatigue") {
                 activated.setCost(activated.getCost() + 2);
-        } else if (newE.getName() = "Silence") {
+        } else if (newE.getName() == "Silence") {
+        		Cardtype ct();
                 activated = ct.triggered.at(3);
         }
 }
 
 bool Minion::removeEnch(int pos) {
         Cardtype ct{};
-        string eName = myEnchants.at(pos).getName();
+        std::string eName = myEnchants.at(pos).getName();
         std::pair<Type,int> p = ct.construct(getName());
         int enchSize = myEnchants.size();
 
@@ -107,20 +109,20 @@ bool Minion::removeEnch(int pos) {
         int oriCost = ct.minions.at(p.second).getActivated().getCost();
         if (eName == "Giant Strength") {
                 for (int i = 0; i < enchSize; ++i) tempM.addEnch(myEnchants.at(i));
-                int hurted = temp.getDef() - def;
+                int hurted = tempM.getDef() - def;
                 tempM.setAtk(oriAtk);
                 tempM.setDef(oriDef);
-                for (int a = 0; a < pos; ++i) tempM.addEnch(myEnchants.at(a));
+                for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
                 for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
                 atk = tempM.getAtk();
                 def = tempM.getDef() - hurted;
                 if (def <= 0) return true;
         } else if (eName == "Enrage") {
                 for (int i = 0; i < enchSize; ++i) tempM.addEnch(myEnchants.at(i));
-                int hurted = temp.getDef() - def;
+                int hurted = tempM.getDef() - def;
                 tempM.setAtk(oriAtk);
                 tempM.setDef(oriDef);
-                for (int a = 0; a < pos; ++i) tempM.addEnch(myEnchants.at(a));
+                for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
                 for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
                 atk = tempM.getAtk();
                 def = tempM.getDef() - hurted;
