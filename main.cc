@@ -69,8 +69,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("default.deck"), false};
-	  Player player2{p2, loadDeck("default.deck"), false};
+	  Player player1{p1, loadDeck("test.deck"), false};
+	  Player player2{p2, loadDeck("test.deck"), false};
 /*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
@@ -157,14 +157,16 @@ int main(int argc, char *argv[]) {
 					  } else if (p.first == Type::NA) {
 					  }
 				  } else {
-					  //cout << "got here" << endl;
+					  //cout << "got here" << endl;s
 					  if (p.first == Type::Minion) {
 						  //cout << "play minion" << endl;
+						  //cout << p.second << endl;
 						  //cout << "curr is "<< curr->getName() << endl;
 						  //cout << "opponent is " << opponent->getName() << endl;
 						  played = curr->play(*opponent, ct.minions.at(p.second));
 					  } else if (p.first == Type::Spell) {
-						  //cout << "play spell" << endl;
+						 //cout << "play spell" << endl;
+						  //cout << p.second << endl;
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
 					  } else if (p.first == Type::Enchantment) {

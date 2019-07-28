@@ -50,7 +50,7 @@ std::vector<std::string> Minion::display() {
 		return display_minion_activated_ability(getName(), getCost(), atk, def,
 				activated.getCost(), activated.getDescription());
 	} else if (triggered.getDescription() != "NA") {
-		return display_minion_triggered_ability(getName(),getCost(), atk, def, triggered.getDescription())
+		return display_minion_triggered_ability(getName(),getCost(), atk, def, triggered.getDescription());
 	} else {
 		return display_minion_no_ability(getName(), getCost(), atk, def);
 	}
