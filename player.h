@@ -63,6 +63,7 @@ public:
 
 	void displayBoard();
 	void displayBoardRest(int playerNum);
+	void inspectMinion(int pos);
 	/*
 	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,
