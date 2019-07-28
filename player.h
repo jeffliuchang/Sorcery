@@ -55,7 +55,7 @@ public:
 	bool resurrect(Player& opponent);
 	bool minionToHand(Player& opponent, int boardPos);
 	bool minionDamaged(Player& opponent, int pos, int damage);
-	bool hasMinion(Minion &minion);
+	void buffMinion(int boardPos, int atkBuff, int defBuff);
 	void trigger(Player& opponent, Condition condition, int enterOrExit);
 	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 

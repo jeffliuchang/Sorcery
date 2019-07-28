@@ -1,0 +1,17 @@
+Jeff
+Grace
+hand
+play 1
+play 1 
+play 1
+attack 2
+board
+end
+play 4
+play 4
+board
+use 1
+attack 1 1 1
+board
+end
+board

@@ -40,8 +40,8 @@ class Minion final: public Card {
         Triggered getTriggered();
         void attack(Player& player);
         bool takeDamage(int damage);
-        void setDef(int def);
-        void setAtk(int atk);
+        void setDef(int defence);
+        void setAtk(int attack);
         int getDef();
         int getAtk();
         std::vector<std::string> display();

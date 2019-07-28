@@ -1,0 +1,15 @@
+Sean
+Ten
+play 4
+play 4
+board
+end
+play 1
+play 1
+board
+end
+use 2 2 1
+end
+board
+use 1
+board

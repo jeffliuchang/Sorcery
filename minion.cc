@@ -56,12 +56,12 @@ std::vector<std::string> Minion::display() {
 	}
 }
 
-void Minion::setDef(int def) {
-	this->def = def;
+void Minion::setDef(int defence) {
+	def = defence;
 }
 
-void Minion::setAtk(int atk) {
-	this->atk = atk;
+void Minion::setAtk(int attack) {
+	atk = attack;
 }
 
 int Minion::getDef() {

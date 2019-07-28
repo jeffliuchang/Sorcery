@@ -131,14 +131,12 @@ bool Player::minionDamaged(Player& opponent, int pos, int damage) {
 	return false;
 }
 
-bool Player::hasMinion(Minion &minion) {
-	int size = board.size();
-	for (int i = 0; i < size; i++) {
-		if (&board.at(i) == &minion) {
-			return true;
-		}
-	}
-	return false;
+
+void Player::buffMinion(int boardPos, int atkBuff, int defBuff) {
+	int atk = board.at(boardPos).getAtk();
+	board.at(boardPos).setAtk(atk+atkBuff);
+	int def = board.at(boardPos).getDef();
+	board.at(boardPos).setDef(def+defBuff);
 }
 /*
 std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5) {
@@ -248,9 +246,10 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
 	//std::cout << "hit trigger" << std::endl;
 	int size = board.size();
-	int pos = 0;
+	//int pos = 0;
 	for (int i = 0; i < size; ++i) {
-		bool die = board.at(i).getTriggered().usedOn(*this,opponent,board.at(pos),enterOrExit,condition);
+		board.at(i).getTriggered().usedOn(*this,opponent,1,i,enterOrExit,condition);
+		/*
 		if (die) {
 			std::cout << "something dies" << std::endl;
 			if (i == enterOrExit) {
@@ -260,21 +259,22 @@ void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1
 			}
 		}
 		++pos;
+		*/
 	}
 	//std::cout << "loop ends" << std::endl;
 	int opponentSize = opponent.getBoard().size();
 	//std::cout << "opponent board size is " << opponentSize << std::endl;
-	pos = 0;
+	//pos = 0;
 	for (int i = 0; i < opponentSize; ++i) {
-		bool die = opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent,opponent.getBoard().at(pos),enterOrExit,condition);
-		if (die) {
+		opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent,2,i,enterOrExit,condition);
+		/*if (die) {
 			if (i == enterOrExit) {
 				--pos;
 			} else {
 				opponentSize -= 1;
 			}
 		}
-		++pos;
+		++pos;*/
 	}
 }
 /*

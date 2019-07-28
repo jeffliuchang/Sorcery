@@ -12,7 +12,7 @@ public:
 	~Triggered() = default;
 	virtual bool usedOn(Player &player) override;
 	virtual bool usedOn(Player &player, int pos) override;
-	bool usedOn(Player &player1, Player &player2, Minion &owner, int enterOrExit, Condition condition);
+	bool usedOn(Player &player1, Player &player2, int owner, int boardPos, int enterOrExit, Condition condition);
 };
 
 
