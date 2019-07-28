@@ -204,8 +204,10 @@ int main(int argc, char *argv[]) {
 					  curr->getBoard().at(mine-1).getActivated().usedOn(*curr,*opponent,-1);
 				  }
 			  }
-		  } else if (next == "describe") {
-
+		  } else if (next == "inspect") {
+			  int pos;
+			  line >> pos;
+			  curr->inspectMinion(pos);
 		  } else if (next == "hand") {
 			  int handSize = curr->getHand().size();
 			  vector <std::pair<Type,int>> hands;
