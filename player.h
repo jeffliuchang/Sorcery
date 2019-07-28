@@ -50,6 +50,7 @@ public:
 	void endTurn(Player& opponent);
 	void startTurn(Player& opponent);
 	void draw();
+	bool checkSilenced(int pos);
 	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
 	void minionToGraveyard(Player& opponent, int boardPos);
