@@ -244,37 +244,13 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 }
 
 void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
-	//std::cout << "hit trigger" << std::endl;
 	int size = board.size();
-	//int pos = 0;
 	for (int i = 0; i < size; ++i) {
 		board.at(i).getTriggered().usedOn(*this,opponent,1,i,enterOrExit,condition);
-		/*
-		if (die) {
-			std::cout << "something dies" << std::endl;
-			if (i == enterOrExit) {
-				--pos;
-			} else {
-				size -= 1;
-			}
-		}
-		++pos;
-		*/
 	}
-	//std::cout << "loop ends" << std::endl;
 	int opponentSize = opponent.getBoard().size();
-	//std::cout << "opponent board size is " << opponentSize << std::endl;
-	//pos = 0;
 	for (int i = 0; i < opponentSize; ++i) {
 		opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent,2,i,enterOrExit,condition);
-		/*if (die) {
-			if (i == enterOrExit) {
-				--pos;
-			} else {
-				opponentSize -= 1;
-			}
-		}
-		++pos;*/
 	}
 }
 /*
