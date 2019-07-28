@@ -95,7 +95,7 @@ void Player::draw() {
 }
 
 bool Player::checkSilenced(int pos) {
-	return board.at(Pos).getSilenced();
+	return board.at(pos).getSilenced();
 }
 
 bool Player::play(Player& opponent, Minion newM) {

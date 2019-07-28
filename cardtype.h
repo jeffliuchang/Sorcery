@@ -7,12 +7,12 @@
 #include <map>
 #include <memory>
 #include "spell.h"
+#include "ritual.h"
 
 class Card;
 class Minion;
 //class Spell;
 class Enchantment;
-class Ritual;
 class Activated;
 class Triggered;
 
@@ -23,8 +23,8 @@ struct Cardtype {
 	std::vector<Spell> spells;
 	std::vector<Activated> activated;
 	std::vector<Triggered> triggered;
-	//std::vector<Enchantment> enchantments;
-	//std::vector<Ritual> rituals;
+	std::vector<Enchantment> enchantments;
+	std::vector<Ritual> rituals;
 /*
 	std::vector<std::string> spells{"Banish", "Unsummon", "Recharge", "Disenchant",
 		"Raise Dead", "Blizzard"};
