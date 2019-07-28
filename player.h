@@ -52,10 +52,12 @@ public:
 	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
 	void minionToGraveyard(Player& opponent, int boardPos);
+	void handToGraveyard(int handPos);
 	bool resurrect(Player& opponent);
 	bool minionToHand(Player& opponent, int boardPos);
 	bool minionDamaged(Player& opponent, int pos, int damage);
 	void buffMinion(int boardPos, int atkBuff, int defBuff);
+	void enchantMinion(int pos, Enchantment e);
 	void trigger(Player& opponent, Condition condition, int enterOrExit);
 	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 
