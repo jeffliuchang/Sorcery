@@ -12,6 +12,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include "ritual.h"
 
 class Card;
 class Minion;
@@ -23,9 +24,10 @@ class Player {
 	int hp;
 	int magic;
 	std::vector<std::string> deck;
-	std::vector<std::string> hand;
+	std::vector<Card> hand;
 	std::vector<Minion> board;
 	std::vector<Minion> gy;
+	Ritual ritual;
 	/*
 	int hp;
 	int magic;
@@ -40,7 +42,7 @@ public:
 	Player(std::string name, std::vector<std::string> mydeck, bool shuffle);
 	std::string getName();
 	std::vector<std::string> getDeck();
-	std::vector<std::string> getHand();
+	std::vector<Card> getHand();
 	std::vector<Minion> getBoard();
 
 	int getHp();

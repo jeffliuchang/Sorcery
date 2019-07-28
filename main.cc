@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
 			  int mine, player, yourPos;
 			  string yours;
 			  if (line >> mine) {
-				  std::string name = curr->getHand().at(mine-1);
+				  std::string name = curr->getHand().at(mine-1).getName();
 				  std::pair<Type,int> p = ct.construct(name);
 				  bool played = false;
 				  if ((line >> player) && (line >> yours)) {
@@ -158,6 +158,7 @@ int main(int argc, char *argv[]) {
 						  else player2.enchantMinion(yourPos, ct.enchantments.at(p.second));
 						  
 					  } else if (p.first == Type::Ritual) {
+
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
 					  }
@@ -215,7 +216,7 @@ int main(int argc, char *argv[]) {
 			  vector <std::pair<Type,int>> hands;
 			  int lines = 11;
 			  for (int a = 0; a < handSize; ++a) {
-				  std::string name = curr->getHand().at(a);
+				  std::string name = curr->getHand().at(a).getName();
 				  hands.emplace_back(ct.construct(name));
 			  }
 			  for (int i = 0; i < lines; ++i) {

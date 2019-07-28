@@ -58,6 +58,8 @@ Cardtype::Cardtype() {
 			Condition::MinionEnterPlay, 1, 4, 1));
 	rituals.emplace_back(Ritual("Standstill", "Whenever a minion enters play, destroy it",
 			Condition::MinionEnterPlay, 3, 4, 2));
+	rituals.emplace_back(Ritual("NA", "NA",
+			Condition::MinionEnterPlay, 1000, 1000, 1000));
 
 }
 

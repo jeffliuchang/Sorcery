@@ -6,12 +6,13 @@
 #include "triggered.h"
 #include "enchantment.h"
 #include "ritual.h"
+#include "cardtype.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
 
 Player::Player(std::string name, std::vector<std::string> mydeck, bool shuffle)
-:name(name),hp(20),magic(3){
+:name(name),hp(20),magic(3),ritual(Ritual("NA", "NA", Condition::MinionEnterPlay, 1000, 1000, 1000)){
 
 	if (shuffle) {
 		for (int j = mydeck.size(); j > 0; --j ) {
@@ -24,11 +25,22 @@ Player::Player(std::string name, std::vector<std::string> mydeck, bool shuffle)
 
 	deck = mydeck;
 
-
+	Cardtype ct{};
+	std::pair<Type, int> p;
 	for (int i = 0; i < 5; ++i) {
-		hand.emplace_back(deck.at(0));
+		p = ct.construct(deck.at(0));
+		if (p.first == Type::Minion) hand.emplace_back(ct.minions.at(p.second));
+		else if (p.first == Type::Spell) hand.emplace_back(ct.spells.at(p.second));
+		else if (p.first == Type::Enchantment) hand.emplace_back(ct.enchantments.at(p.second));
+		else if (p.first == Type::Ritual) hand.emplace_back(ct.rituals.at(p.second));
+		else if (p.first == Type::NA) {
+			std::cout << "no card matching name" << deck.at(0);
+			i--;
+			continue;
+		}
 		deck.erase(deck.begin());
 	}
+
 
 	std::cout << "player constructor for " << name << std::endl;
 }
@@ -41,7 +53,7 @@ std::vector<std::string> Player::getDeck() {
 	return deck;
 }
 
-std::vector<std::string> Player::getHand() {
+std::vector<Card> Player::getHand() {
 	return hand;
 }
 
@@ -68,7 +80,7 @@ void Player::gainMagic(int gain) {
 void Player::removeHand(int pos) {
 	//std::cout << "printing first two cards before erase: " << std::endl;
 	//for (int j = 0; j < 2; ++j) std::cout << hand.at(j) << std::endl;
-	std::vector<std::string>::iterator it = hand.begin();
+	std::vector<Card>::iterator it = hand.begin();
 	for (int i = 0; i < pos; ++it) { ++i; }
 	hand.erase(it);
 }
@@ -88,8 +100,19 @@ void Player::startTurn(Player& opponent) {
 }
 
 void Player::draw() {
+	Cardtype ct{};
+	std::pair<Type, int> p;
 	if (hand.size() < 5) {
-		hand.emplace_back(deck.at(0));
+		p = ct.construct(deck.at(0));
+		if (p.first == Type::Minion) hand.emplace_back(ct.minions.at(p.second));
+		else if (p.first == Type::Spell) hand.emplace_back(ct.spells.at(p.second));
+		else if (p.first == Type::Enchantment) hand.emplace_back(ct.enchantments.at(p.second));
+		else if (p.first == Type::Ritual) hand.emplace_back(ct.rituals.at(p.second));
+		else if (p.first == Type::NA) {
+			std::cout << "no card matching name" << deck.at(0);
+			draw();
+			return;
+		}
 		deck.erase(deck.begin());
 	}
 }
@@ -279,7 +302,7 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 			minionToGraveyard(opponent,boardPos);
 			return false;
 		}
-		hand.emplace_back(board.at(boardPos).getName());
+		hand.emplace_back(board.at(boardPos));
 		std::vector<Minion>::iterator it = board.begin();
 		for (int i = 0; i < boardPos; ++it) { ++i; }
 		board.erase(it);
