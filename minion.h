@@ -16,6 +16,9 @@ class Enchantment;
 class Minion final: public Card {
         int atk;
         int def;
+        int actions;
+        int maxActions;
+        vector<Enchantment> myEnchants;
         Activated activated;
         Triggered triggered;
         /*
@@ -45,6 +48,9 @@ class Minion final: public Card {
         int getDef();
         int getAtk();
         std::vector<std::string> display();
+        void addEnch(Enchantment newE);
+        bool removeEnch(int pos);
+        bool removeAllEnch();
 
 };
 
