@@ -19,6 +19,7 @@ class Minion final: public Card {
         int def;
         int actions;
         int maxActions;
+        bool silenced;
         std::vector<Enchantment> myEnchants;
         Activated activated;
         Triggered triggered;
@@ -49,6 +50,7 @@ class Minion final: public Card {
         void setAtk(int attack);
         int getDef();
         int getAtk();
+        bool getSilenced();
         std::vector<std::string> display();
         void addEnch(Enchantment newE);
         bool removeEnch(int pos);
