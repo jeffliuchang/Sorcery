@@ -90,6 +90,10 @@ void Player::draw() {
 	}
 }
 
+bool Player::checkSilenced(int pos) {
+	return board.at(Pos).getSilenced();
+}
+
 bool Player::play(Player& opponent, Minion newM) {
 	if (board.size() < 5) {
 		board.emplace_back(newM);
