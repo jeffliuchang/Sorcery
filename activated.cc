@@ -4,7 +4,11 @@
 #include "cardtype.h"
 
 Activated::Activated(std::string description, int cost)
-:Ability(description),actCost(cost) {}
+	:Ability(description),actCost(cost) {}
+
+Activated::Activated(const Activated& other)
+	:Ability(other.getDescription(), other.getCost(){}
+
 
 int Activated::getCost() {
 	return actCost;
