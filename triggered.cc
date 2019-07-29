@@ -28,7 +28,7 @@ bool Triggered::usedOn(Player &player1, Player &player2, int owner, int boardPos
 	} else if (getDescription() == "Whenever an opponent's minion enters play, deal 1 damage to it.") {
 		if (condition == Condition::MinionEnterPlay) {
 			if (owner != 1) {
-				return player1.minionDamaged(player2,enterOrExit,1);
+				return player1.minionDamaged(player2,enterOrExit,1,1);
 			}
 		}
 	} else if (getDescription() == "At the end of your turn, all your minions gain +0/+1.") {
@@ -36,7 +36,7 @@ bool Triggered::usedOn(Player &player1, Player &player2, int owner, int boardPos
 			int size = player1.getBoard().size();
 			int pos = 0;
 			for (int i = 0; i < size; ++i) {
-				if (player1.minionDamaged(player2,pos,-1)) {
+				if (player1.minionDamaged(player2,pos,-1,1)) {
 					--pos;
 				}
 				++pos;

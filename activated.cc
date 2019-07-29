@@ -27,7 +27,7 @@ bool Activated::usedOn(Player &player1, Player &player2, int pos) {
 		return player1.play(player2, ct.minions.at(0));
 	} else if (getDescription() == "Deal 1 damage to target minion") {
 		int position = pos;
-		player1.minionDamaged(player2, position ,1);
+		player1.minionDamaged(player2, position ,1,1);
 		return true;
 	}
 	return false;

@@ -7,7 +7,7 @@ Spell::Spell(std::string name, std::string description, int cost)
 :Card(name, cost), Activated(description, cost){}
 
 
-bool Spell::usedOn(Player &player1, Player &player2, int pos) {
+bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) {
 	if (getDescription() == "Destroy target minion or ritual") {// pos = 6 for ritual
 		if (pos == 6) {
 			// to be completed ...
@@ -17,11 +17,11 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos) {
 				std::cout << "target out of range" << std::endl;
 				return false;
 			}
-			player1.minionDamaged(player2, pos, player1.getBoard().at(pos).getDef());
+			player1.minionDamaged(player2, pos, player1.getBoard().at(pos).getDef(), activePlayer);
 			return true;
 		}
 	} else if (getDescription() == "Return target minion to its owner's hand") {
-		return player1.minionToHand(player2, pos);
+		return player1.minionToHand(player2, pos, activePlayer);
 	} else if (getDescription() == "Destroy the top enchantment on target minion") {
 		// to be completed ...
 	} else if (getDescription() == "Your ritual gains 3 charges") {
@@ -33,14 +33,14 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos) {
 		int boardSize2 = player2.getBoard().size();
 		int pos = 0;
 		for (int i = 0; i < boardSize1; ++i) {
-			if (player1.minionDamaged(player2,pos,2)) {
+			if (player1.minionDamaged(player2,pos,2, activePlayer)) {
 				--pos;
 			}
 			++pos;
 		}
 		pos = 0;
 		for (int j = 0; j < boardSize2; ++j) {
-			if (player2.minionDamaged(player1,pos,2)) {
+			if (player2.minionDamaged(player1,pos,2, activePlayer)) {
 				--pos;
 			}
 			++pos;

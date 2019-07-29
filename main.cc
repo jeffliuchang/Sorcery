@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("test2.deck"), false};
-	  Player player2{p2, loadDeck("test2.deck"), false};
+	  Player player1{p1, loadDeck("test3.deck"), false};
+	  Player player2{p2, loadDeck("test3.deck"), false};
 /*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
@@ -82,14 +82,17 @@ int main(int argc, char *argv[]) {
 */
 	  Player *curr = &player1;
 	  Player *opponent = &player2;
+	  int activePlayer = 1;
 
 	  while (overwrite(init,cin,cmd)) {
 		  if (curr == &player1) {
 			  opponent = &player2;
+			  activePlayer = 1;
 		  } else {
 			  opponent = &player1;
+			  activePlayer = 2;
 		  }
-		  //cout << cmd << endl;
+		  cout << cmd << endl;
 		  istringstream line(cmd);
 		  string next;
 		  line >> next;
@@ -113,13 +116,13 @@ int main(int argc, char *argv[]) {
 					  if (curr == &player1) {
 						  int takeDamage = player2.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player1.getBoard().at(attacker-1).getAtk();
-						  curr->minionDamaged(player2,attacker-1,takeDamage);
-						  player2.minionDamaged(player1,victim-1, dealDamage);
+						  curr->minionDamaged(player2,attacker-1,takeDamage,activePlayer);
+						  player2.minionDamaged(player1,victim-1, dealDamage,activePlayer);
 					  } else {
 						  int takeDamage = player1.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player2.getBoard().at(attacker-1).getAtk();
-						  curr->minionDamaged(player1,attacker-1,takeDamage);
-						  player1.minionDamaged(player2,victim-1, dealDamage);
+						  curr->minionDamaged(player1,attacker-1,takeDamage,activePlayer);
+						  player1.minionDamaged(player2,victim-1, dealDamage,activePlayer);
 					  }
 				  } else {
 					  //std::cout << "reach 1" << std::endl;
@@ -146,6 +149,8 @@ int main(int argc, char *argv[]) {
 				  if ((line >> player) && (line >> yours)) {
 					  Player* target = &player1;
 					  if (player == 2) target = &player2;
+					  Player* otherPlayer = &player2;
+					  if (player == 2) otherPlayer = &player1;
 					  if (yours == "r") {
 						  yourPos = 6;
 					  } else {
@@ -154,7 +159,7 @@ int main(int argc, char *argv[]) {
 					  }
 
 					  if (p.first == Type::Spell) {
-						  played = ct.spells.at(p.second).usedOn(*target, *opponent, yourPos-1);
+						  played = ct.spells.at(p.second).usedOn(*target, *otherPlayer, yourPos-1,activePlayer);
 						  
 					  } else if (p.first == Type::Enchantment) {
 						  if (player == 1) played = player1.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
@@ -165,10 +170,16 @@ int main(int argc, char *argv[]) {
 					  }
 				  } else {
 					  if (p.first == Type::Minion) {
-						  played = curr->play(*opponent, ct.minions.at(p.second));
+						  int cost = curr->getHand().at(mine-1).getCost();
+						  int atk = curr->getHand().at(mine-1).getAtk();
+						  int def = curr->getHand().at(mine-1).getDef();
+						  Activated activated = ct.minions.at(p.second).getActivated();
+						  Triggered triggered = ct.minions.at(p.second).getTriggered();
+						  Minion minion(name,cost,atk,def,activated,triggered);
+						  played = curr->play(*opponent, minion);
 					  } else if (p.first == Type::Spell) {
-						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
-						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
+						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1,activePlayer);
+						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1,activePlayer);
 					  } else if (p.first == Type::Ritual) {
 						  played = curr->setRitual(ct.rituals.at(p.second));
 					  } else if (p.first == Type::NA) {
@@ -183,7 +194,7 @@ int main(int argc, char *argv[]) {
 			  int mine, player, yourPos;
 			  string yours;
 			  if (line >> mine) {
-				  if (curr->checkSilenced(mine)) continue;
+				  if (curr->checkSilenced(mine-1)) continue;
 				  if ((line >> player) && (line >> yours)) {
 					  if (yours == "r") {
 						  if (player == 1) {

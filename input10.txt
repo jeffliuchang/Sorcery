@@ -1,0 +1,15 @@
+sean
+ten
+hand
+play 1
+play 3
+play 3
+board
+hand
+end
+board
+play 1
+play 3
+play 3
+board
+use 3

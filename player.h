@@ -59,13 +59,13 @@ public:
 	bool checkSilenced(int pos);
 	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
-	void minionToGraveyard(Player& opponent, int boardPos);
+	void minionToGraveyard(Player& opponent, int boardPos, int activePlayer);
 	bool resurrect(Player& opponent);
-	bool minionToHand(Player& opponent, int boardPos);
-	bool minionDamaged(Player& opponent, int pos, int damage);
+	bool minionToHand(Player& opponent, int boardPos, int activePlayer);
+	bool minionDamaged(Player& opponent, int pos, int damage, int activePlayer);
 	void buffMinion(int boardPos, int atkBuff, int defBuff);
 	bool enchantMinion(int pos, Enchantment e);
-	void trigger(Player& opponent, Condition condition, int enterOrExit);
+	void trigger(Player& opponent, Condition condition, int enterOrExit, int activePlayer);
 	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 
 	void displayBoard();

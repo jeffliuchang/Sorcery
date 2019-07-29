@@ -103,14 +103,14 @@ void Player::endTurn(Player& opponent) {
 	std::cout << getName() << " ends turn" << std::endl;
 	std::cout << "hp: " << getHp() << std::endl;
 	std::cout << "magic: " << getMagic() << std::endl;
-	trigger(opponent, Condition::EndOfTurn,-1);
+	trigger(opponent, Condition::EndOfTurn,-1,1);
 }
 
 void Player::startTurn(Player& opponent) {
 	std::cout << getName() << " starts turn" << std::endl;
 	this->draw();
 	magic++;
-	trigger(opponent, Condition::StartOfTurn,-1);
+	trigger(opponent, Condition::StartOfTurn,-1,1);
 }
 
 void Player::draw() {
@@ -123,7 +123,7 @@ void Player::draw() {
 		else if (p.first == Type::Enchantment) hand.emplace_back(ct.enchantments.at(p.second));
 		else if (p.first == Type::Ritual) hand.emplace_back(ct.rituals.at(p.second));
 		else if (p.first == Type::NA) {
-			std::cout << "no card matching name" << deck.at(0);
+			std::cout << "no card matching name " << deck.at(0);
 			draw();
 			return;
 		}
@@ -139,7 +139,7 @@ bool Player::play(Player& opponent, Minion newM) {
 	if (board.size() < 5) {
 		board.emplace_back(newM);
 		int pos = board.size()-1;
-		trigger(opponent,Condition::MinionEnterPlay,pos);
+		trigger(opponent,Condition::MinionEnterPlay,pos,1);
 		return true;
 	}
 	return false;
@@ -155,16 +155,16 @@ void Player::attack(int attacker, Player& player){
 	board.at(attacker).attack(player);
 }
 
-void Player::minionToGraveyard(Player& opponent, int boardPos) {
+void Player::minionToGraveyard(Player& opponent, int boardPos, int activePlayer) {
 	gy.emplace(gy.begin(),board.at(boardPos));
 	gy.at(0).removeAllEnch();
 	auto it = board.begin();
 	for (int i = 0; i < boardPos; ++i) { ++it; }
 	board.erase(it);
-	trigger(opponent,Condition::MinionExitPlay,-1);
+	trigger(opponent,Condition::MinionExitPlay,-1, activePlayer);
 }
 
-bool Player::minionDamaged(Player& opponent, int pos, int damage) {
+bool Player::minionDamaged(Player& opponent, int pos, int damage, int activePlayer) {
 	bool die;
 	int size = board.size();
 	if (size <= pos) {
@@ -173,7 +173,7 @@ bool Player::minionDamaged(Player& opponent, int pos, int damage) {
 	}
 	die = board.at(pos).takeDamage(damage);
 	if (die) {
-		minionToGraveyard(opponent, pos);
+		minionToGraveyard(opponent, pos, activePlayer);
 		return true;
 	}
 	return false;
@@ -307,22 +307,22 @@ bool Player::resurrect(Player& opponent) {
 	board.emplace_back(gy.at(0));
 	gy.erase(gy.begin());
 	int pos = board.size()-1;
-	trigger(opponent, Condition::MinionEnterPlay, pos);
+	trigger(opponent, Condition::MinionEnterPlay, pos,1);
 	return true;
 }
 
-bool Player::minionToHand(Player& opponent, int boardPos) {
+bool Player::minionToHand(Player& opponent, int boardPos, int activePlayer) {
 	int boardSize = getBoard().size();
 	int handSize = getHand().size();
-	if (boardSize >= 5) {
-		std::cout << "Target board is full, cannot use this spell." << std::endl;
+	if (boardSize <= boardPos) {
+		std::cout << "Target out of range" << std::endl;
 		return false;
 	} else if (handSize >= 5) {
 		std::cout << "Target hand is full, cannot use this spell." << std::endl;
 		return false;
 	} else {
 		if (board.at(boardPos).removeAllEnch()) {
-			minionToGraveyard(opponent,boardPos);
+			minionToGraveyard(opponent,boardPos, activePlayer);
 			return false;
 		}
 		hand.emplace_back(board.at(boardPos));
@@ -330,21 +330,24 @@ bool Player::minionToHand(Player& opponent, int boardPos) {
 		for (int i = 0; i < boardPos; ++it) { ++i; }
 		board.erase(it);
 	}
-	trigger(opponent,Condition::MinionExitPlay, -1);
+	trigger(opponent,Condition::MinionExitPlay, -1, activePlayer);
 	return true;
 
 }
 
 
-void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1) {
-	int size = board.size();
-	for (int i = 0; i < size; ++i) {
-		board.at(i).getTriggered().usedOn(*this,opponent,1,i,enterOrExit,condition);
+void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1, int activePlayer = 1) {
+	if (activePlayer == 1) {
+		int size = board.size();
+		for (int i = 0; i < size; ++i) {
+			board.at(i).getTriggered().usedOn(*this,opponent,1,i,enterOrExit,condition);
+		}
+		int rSize = ritual.size();
+		if (rSize > 0) {
+			ritual.at(0).usedOn(*this,opponent,1,enterOrExit,condition);
+		}
 	}
-	int rSize = ritual.size();
-	if (rSize > 0) {
-		ritual.at(0).usedOn(*this,opponent,1,enterOrExit,condition);
-	}
+
 	int opponentSize = opponent.getBoard().size();
 	for (int i = 0; i < opponentSize; ++i) {
 		opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent,2,i,enterOrExit,condition);
@@ -352,6 +355,17 @@ void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1
 	int oppRSize = opponent.getRitual().size();
 	if (oppRSize > 0) {
 		opponent.getRitual().at(0).usedOn(*this,opponent,2,enterOrExit,condition);
+	}
+
+	if (activePlayer == 2) {
+		int size = board.size();
+		for (int i = 0; i < size; ++i) {
+			board.at(i).getTriggered().usedOn(*this,opponent,1,i,enterOrExit,condition);
+		}
+		int rSize = ritual.size();
+		if (rSize > 0) {
+			ritual.at(0).usedOn(*this,opponent,1,enterOrExit,condition);
+		}
 	}
 }
 

@@ -125,7 +125,7 @@ bool Minion::removeEnch(int pos) {
                 tempM.setAtk(oriAtk);
                 tempM.setDef(oriDef);
                 for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
-                for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
+                for (int b = pos+1; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
                 atk = tempM.getAtk();
                 def = tempM.getDef() - hurted;
                 if (def <= 0) dead = true;
@@ -135,7 +135,7 @@ bool Minion::removeEnch(int pos) {
                 tempM.setAtk(oriAtk);
                 tempM.setDef(oriDef);
                 for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
-                for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
+                for (int b = pos+1; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
                 atk = tempM.getAtk();
                 def = tempM.getDef() - hurted;
                 if (def <= 0) dead = true;
@@ -146,7 +146,7 @@ bool Minion::removeEnch(int pos) {
                 activated.setCost(oriCost);
         } else if (eName == "Silence") {
                 for (int a = 0; a < pos; ++a) tempM.addEnch(myEnchants.at(a));
-                for (int b = pos; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
+                for (int b = pos+1; b < enchSize; ++b) tempM.addEnch(myEnchants.at(b));
 		silenced = tempM.getSilenced();
         }
 
