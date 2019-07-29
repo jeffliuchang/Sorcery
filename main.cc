@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("test3.deck"), false};
-	  Player player2{p2, loadDeck("test3.deck"), false};
+	  Player player1{p1, loadDeck("test2.deck"), false};
+	  Player player2{p2, loadDeck("test2.deck"), false};
 /*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
@@ -194,6 +194,11 @@ int main(int argc, char *argv[]) {
 			  int mine, player, yourPos;
 			  string yours;
 			  if (line >> mine) {
+				  int boardSize = curr->getBoard().size();
+				  if (boardSize < mine) {
+					  cout << "minion not found at position " << mine << endl;
+					  continue;
+				  }
 				  if (curr->checkSilenced(mine-1)) continue;
 				  if ((line >> player) && (line >> yours)) {
 					  if (yours == "r") {

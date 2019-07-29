@@ -70,6 +70,16 @@ std::vector<Ritual> Player::getRitual() {
 	return ritual;
 }
 
+bool Player::removeRitual() {
+	int size = ritual.size();
+	if (size == 0) {
+		std::cout << "player has no ritual" << std::endl;
+		return false;
+	}
+	ritual.erase(ritual.begin());
+	return true;
+}
+
 bool Player::setRitual(Ritual other) {
 	int size = ritual.size();
 	if ( size > 0 ) {
@@ -77,6 +87,10 @@ bool Player::setRitual(Ritual other) {
 	}
 	ritual.emplace_back(other);
 	return true;
+}
+
+std::vector<Minion> Player::getGy() {
+	return gy;
 }
 
 void Player::loseHp(int hpLost) {

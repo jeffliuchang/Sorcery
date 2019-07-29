@@ -2,6 +2,7 @@
 #include "player.h"
 #include "minion.h"
 #include "enchantment.h"
+#include "ritual.h"
 
 Spell::Spell(std::string name, std::string description, int cost)
 :Card(name, cost), Activated(description, cost){}
@@ -10,7 +11,7 @@ Spell::Spell(std::string name, std::string description, int cost)
 bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) {
 	if (getDescription() == "Destroy target minion or ritual") {// pos = 6 for ritual
 		if (pos == 6) {
-			// to be completed ...
+			return player1.removeRitual();
 		} else {
 			int size = player1.getBoard().size();
 			if (size <= pos) {
@@ -23,9 +24,23 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) 
 	} else if (getDescription() == "Return target minion to its owner's hand") {
 		return player1.minionToHand(player2, pos, activePlayer);
 	} else if (getDescription() == "Destroy the top enchantment on target minion") {
-		// to be completed ...
+		int size = player1.getBoard().at(pos).getEnchants().size();
+		if (size == 0) {
+			std::cout << "minion has no enchantments" << std::endl;
+			return false;
+		}
+		if (player1.getBoard().at(pos).removeEnch(size-1)) {
+			player1.minionToGraveyard(player2,pos,activePlayer);
+		}
+		return true;
 	} else if (getDescription() == "Your ritual gains 3 charges") {
-		// to be completed ...
+		int size = player1.getRitual().size();
+		if (size == 0) {
+			std::cout << player1.getName() << " has no ritual" << std::endl;
+			return false;
+		}
+		player1.getRitual().at(0).setCharge(player1.getRitual().at(0).getCharge()+3);
+		return true;
 	} else if (getDescription() == "Resurrect the top minion in your graveyard and set its defence to 1") {
 		return player1.resurrect(player2);
 	} else if (getDescription() == "Deal 2 damage to all minions") {

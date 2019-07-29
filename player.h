@@ -46,7 +46,9 @@ public:
 	std::vector<Card> getHand();
 	std::vector<Minion> getBoard();
 	std::vector<Ritual> getRitual();
+	bool removeRitual();
 	bool setRitual(Ritual other);
+	std::vector<Minion> getGy();
 
 	int getHp();
 	void loseHp(int hpLost);
