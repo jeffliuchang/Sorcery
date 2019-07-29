@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("default.deck"), false};
-	  Player player2{p2, loadDeck("default.deck"), false};
+	  Player player1{p1, loadDeck("test.deck"), false};
+	  Player player2{p2, loadDeck("test.deck"), false};
 /*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
