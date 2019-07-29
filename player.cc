@@ -11,9 +11,8 @@
 #include <vector>
 #include <cstdlib>
 
-Player::Player(std::string name, std::vector<std::string> mydeck, bool shuffle)
-:name(name),hp(20),magic(3),ritual(Ritual("NA", "NA", Condition::MinionEnterPlay, 1000, 1000, 1000)){
-
+Player::Player(std::string name, std::vector<std::string> mydeck,bool shuffle)
+:name(name),hp(20),magic(3){
 	if (shuffle) {
 		for (int j = mydeck.size(); j > 0; --j ) {
 			int k = rand() % j;
@@ -63,6 +62,18 @@ std::vector<Minion> Player::getBoard() {
 
 int Player::getHp() {
 	return hp;
+}
+
+std::vector<Ritual> Player::getRitual() {
+	return ritual;
+}
+
+void Player::setRitual(Ritual other) {
+	int size = ritual.size();
+	if ( size > 0 ) {
+		ritual.erase(ritual.begin());
+	}
+	ritual.emplace_back(other);
 }
 
 void Player::loseHp(int hpLost) {
@@ -227,6 +238,10 @@ void Player::displayBoardRest(int playerNum) {
 	card_template_t grave;
 	if (gy.size() == 0) graveEmpty = true;
 	else grave = gy.at(0).display();
+	bool ritualEmpty = false;
+	card_template_t ritualTemp;
+	if (ritual.size() == 0) ritualEmpty = true;
+	else ritualTemp = ritual.at(0).display();
 
 	//std::cout << "starting for loop" << std::endl;
 	int lines = 11;
@@ -234,7 +249,8 @@ void Player::displayBoardRest(int playerNum) {
 	for (int a = 0; a < lines; ++a) {
 		std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
 		for (int b = 0; b < blocks; ++b) {
-			if (b == 0) std::cout << CARD_TEMPLATE_BORDER[a];
+			if (b == 0 and ritualEmpty) std::cout << CARD_TEMPLATE_BORDER[a];
+			else if (b == 0 and !ritualEmpty) std::cout << ritualTemp.at(a);
 			else if ((b == 1) || (b == 3)) std::cout << CARD_TEMPLATE_EMPTY[a];
 			else if (b == 2) std::cout << player.at(a);
 			else if ((b == 4) && !graveEmpty) std::cout << grave.at(a);
@@ -318,9 +334,17 @@ void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1
 	for (int i = 0; i < size; ++i) {
 		board.at(i).getTriggered().usedOn(*this,opponent,1,i,enterOrExit,condition);
 	}
+	int rSize = ritual.size();
+	if (rSize > 0) {
+		ritual.at(0).usedOn(*this,opponent,1,enterOrExit,condition);
+	}
 	int opponentSize = opponent.getBoard().size();
 	for (int i = 0; i < opponentSize; ++i) {
 		opponent.getBoard().at(i).getTriggered().usedOn(*this,opponent,2,i,enterOrExit,condition);
+	}
+	int oppRSize = opponent.getRitual().size();
+	if (oppRSize > 0) {
+		opponent.getRitual().at(0).usedOn(*this,opponent,2,enterOrExit,condition);
 	}
 }
 /*

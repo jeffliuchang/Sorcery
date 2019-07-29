@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
   ifstream init;
-
   for (int i = 1; i < argc - 1; i++) {
 	  istringstream iss(argv[i]);
 	  string argument;
@@ -69,8 +68,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("test.deck"), false};
-	  Player player2{p2, loadDeck("test.deck"), false};
+	  Player player1{p1, loadDeck("default.deck"), false};
+	  Player player2{p2, loadDeck("default.deck"), false};
 /*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
@@ -123,10 +122,10 @@ int main(int argc, char *argv[]) {
 						  player1.minionDamaged(player2,victim-1, dealDamage);
 					  }
 				  } else {
-					  std::cout << "reach 1" << std::endl;
+					  //std::cout << "reach 1" << std::endl;
 					  if (curr == &player1) {
 						  curr->attack(attacker-1, player2);
-					      std::cout << "reach 2" << std::endl;
+					      //std::cout << "reach 2" << std::endl;
 					  }
 					  else curr->attack(attacker-1, player1);
 				  }
@@ -158,7 +157,7 @@ int main(int argc, char *argv[]) {
 						  else player2.enchantMinion(yourPos, ct.enchantments.at(p.second));
 						  
 					  } else if (p.first == Type::Ritual) {
-
+						  curr->setRitual(ct.rituals.at(p.second));
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
 					  }

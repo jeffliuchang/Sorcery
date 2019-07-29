@@ -12,12 +12,13 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include "ritual.h"
+
 
 class Card;
 class Minion;
 class Enchantment;
 enum class Condition;
+class Ritual;
 
 class Player {
 	std::string name;
@@ -27,7 +28,7 @@ class Player {
 	std::vector<Card> hand;
 	std::vector<Minion> board;
 	std::vector<Minion> gy;
-	Ritual ritual;
+	std::vector<Ritual> ritual;
 	/*
 	int hp;
 	int magic;
@@ -44,6 +45,8 @@ public:
 	std::vector<std::string> getDeck();
 	std::vector<Card> getHand();
 	std::vector<Minion> getBoard();
+	std::vector<Ritual> getRitual();
+	void setRitual(Ritual other);
 
 	int getHp();
 	void loseHp(int hpLost);

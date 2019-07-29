@@ -4,6 +4,7 @@
 #include <string>
 #include "card.h"
 #include "triggered.h"
+#include <vector>
 
 class Minion;
 class Player;
@@ -15,9 +16,14 @@ class Ritual final : public Card, public Triggered {
 	public:
 	Ritual(std::string name, std::string description, Condition condition,
 			int cost, int charge, int activationCost);
+	int getCharge() const;
+	void setCharge(int charge);
+	int getActCost() const;
+	void setActCost(int actCost);
 	bool usedOn(Player &player) override;
 	bool usedOn(Player &player, int pos) override;
-	bool usedOn(Player &player1, Player &player2, int owner, int boardPos, int enterOrExit, Condition condition);
+	bool usedOn(Player &player1, Player &player2, int owner,int enterOrExit, Condition condition);
+	std::vector<std::string> display();
 };
 
 

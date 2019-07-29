@@ -10,6 +10,8 @@ class Triggered : public Ability {
 public:
 	Triggered(std::string description, Condition condition);
 	~Triggered() = default;
+	Condition getCondition() const;
+	void setCondition(Condition condition);
 	virtual bool usedOn(Player &player) override;
 	virtual bool usedOn(Player &player, int pos) override;
 	bool usedOn(Player &player1, Player &player2, int owner, int boardPos, int enterOrExit, Condition condition);

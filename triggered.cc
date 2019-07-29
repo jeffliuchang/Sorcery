@@ -6,6 +6,13 @@
 Triggered::Triggered(std::string description, Condition condition)
 :Ability(description), condition(condition) {}
 
+Condition Triggered::getCondition() const {
+	return condition;
+}
+
+void Triggered::setCondition(Condition condition) {
+	this->condition = condition;
+}
 
 bool Triggered::usedOn(Player &player) {
 	return false;
