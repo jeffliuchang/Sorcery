@@ -2,6 +2,7 @@
 #define ENCHANTMENT_H
 #include <iostream>
 #include <memory>
+#include <vector>
 #include "card.h"
 
 class Minion;
@@ -13,6 +14,7 @@ class Enchantment final : public Card {
 public:
 	Enchantment(std::string name, std::string description, int cost);
 	std::string getDes();
+	std::vector<std::string> display();
 };
 
 #endif

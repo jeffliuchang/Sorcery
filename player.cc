@@ -187,8 +187,14 @@ void Player::buffMinion(int boardPos, int atkBuff, int defBuff) {
 	board.at(boardPos).setDef(def+defBuff);
 }
 
-void Player::enchantMinion(int pos, Enchantment e) {
-        board.at(pos).addEnch(e);
+bool Player::enchantMinion(int pos, Enchantment e) {
+	int size = board.size();
+	if (size <= pos) {
+		std::cout << "position out of range" << std::endl;
+		return false;
+	}
+	board.at(pos).addEnch(e);
+	return true;
 }
 /*
 std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5) {
@@ -264,37 +270,25 @@ void Player::displayBoardRest(int playerNum) {
 }
 
 void Player::inspectMinion(int pos) {
-        int line = 11;
-        std::vector<std::string> minion = board.at(pos).display();
-        for (int j = 0; j < line; ++j) std::cout << minion.at(j) << std::endl;
+	int line = 11;
+	std::vector<std::string> minion = board.at(pos).display();
+	for (int j = 0; j < line; ++j) std::cout << minion.at(j) << std::endl;
 
-        std::vector<std::vector<std::string>> allE;
-        std::vector<Enchantment> enchants = board.at(pos).getEnchants();
-        std::string name;
-        int enchantSize = enchants.size();
-        for (int i = 0; i < enchantSize; ++i) {
-                name = enchants.at(i).getName();
-                if (name == "Giant Strength") {
-                        allE.emplace_back(display_enchantment_attack_defence(name, enchants.at(i).getCost(), enchants.at(i).getDes(), "+2", "+2"));
-                } else if (name == "Enrage") {
-                        allE.emplace_back(display_enchantment_attack_defence(name, enchants.at(i).getCost(), enchants.at(i).getDes(), "*2", "*2"));
-                } else {
-                        allE.emplace_back(display_enchantment(name, enchants.at(i).getCost(), enchants.at(i).getDes()));
-                }
-        }
+	std::vector<std::vector<std::string>> allE;
+	int size = board.at(pos).getEnchants().size();
+	for (int i = 0; i < size; ++i) allE.emplace_back(board.at(pos).getEnchants().at(i).display());
 
-        int size = allE.size();
-        for (int c = 0; c < size; ++c) {
-                for (int a = 0; a < line; ++a) {
-                        int rest = ((size - c) < 5) ? (size - c) : 5;
-                        for (int j = 0; j < rest; ++j) {
-                                std::cout << allE.at(c+j).at(a);
-                        }
-                        std::cout << std::endl;
-                }
-                c+=4;
-        }
-
+	size = allE.size();
+	for (int c = 0; c < size; ++c) {
+		for (int a = 0; a < line; ++a) {
+			int rest = ((size - c) < 5) ? (size - c) : 5;
+			for (int j = 0; j < rest; ++j) {
+				std::cout << allE.at(c+j).at(a);
+			}
+			std::cout << std::endl;
+		}
+		c+=4;
+	}
 }
 
 
@@ -358,6 +352,43 @@ void Player::trigger(Player& opponent, Condition condition, int enterOrExit = -1
 	int oppRSize = opponent.getRitual().size();
 	if (oppRSize > 0) {
 		opponent.getRitual().at(0).usedOn(*this,opponent,2,enterOrExit,condition);
+	}
+}
+
+void Player::displayHand() {
+	Cardtype ct{};
+	std::pair<Type,int> cur;
+	std::vector<std::vector<std::string>> myHands;
+	int handSize = hand.size();
+	for (int a = 0; a < handSize; ++a) {
+		std::string name = hand.at(a).getName();
+		cur = ct.construct(name);
+		if (cur.first == Type::Minion) {
+			Minion minion(hand.at(a).getName(),hand.at(a).getCost(),
+					hand.at(a).getAtk(),hand.at(a).getDef(),
+					ct.minions.at(cur.second).getActivated(),
+					ct.minions.at(cur.second).getTriggered());
+			myHands.emplace_back(minion.display());
+		} else if (cur.first == Type::Spell) {
+			Spell s = ct.spells.at(cur.second);
+			myHands.emplace_back(display_spell(s.getName(),s.Card::getCost(),s.getDescription()));
+		} else if (cur.first == Type::Enchantment) {
+			myHands.emplace_back(ct.enchantments.at(cur.second).display());
+		} else if (cur.first == Type::Ritual) {
+			Ritual r = ct.rituals.at(cur.second);
+			myHands.emplace_back(display_ritual(r.getName(), r.Card::getCost(), r.getActCost(), r.getDescription(), r.getCharge()));
+		} else if (cur.first == Type::NA) {
+			std::cout << "the " << a << "th card in Hand does not match anything in Cardtype class (Player::displayHand())" << std::endl;
+		}
+	}
+
+	int lines = 11;
+	int size = myHands.size();
+	for (int i = 0; i < lines; ++i) {
+		for (int j = 0; j < size; ++j) {
+			std::cout << myHands.at(j).at(i);
+		}
+		std::cout << std::endl;
 	}
 }
 /*

@@ -14,8 +14,6 @@ class Player;
 
 
 class Minion final: public Card {
-        int atk;
-        int def;
         int actions;
         int maxActions;
         bool silenced;
@@ -45,10 +43,12 @@ class Minion final: public Card {
         std::vector<Enchantment> getEnchants();
         void attack(Player& player);
         bool takeDamage(int damage);
+        /*
         void setDef(int defence);
         void setAtk(int attack);
         int getDef();
         int getAtk();
+        */
         bool getSilenced();
         std::vector<std::string> display();
         void addEnch(Enchantment newE);

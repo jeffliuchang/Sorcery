@@ -22,7 +22,10 @@ void Minion::attack(Minion& minion) {
 
 Minion::Minion(std::string name, int cost,
 		int atk, int def, Activated activated, Triggered triggered)
-:Card(name,cost),atk(atk),def(def),actions(0), maxActions(1), silenced(false), activated(activated), triggered(triggered){}
+:Card(name,cost),actions(0), maxActions(1), silenced(false), activated(activated), triggered(triggered){
+	setAtk(atk);
+	setDef(def);
+}
 
 Activated Minion::getActivated() {
 	return activated;
@@ -53,7 +56,10 @@ bool Minion::takeDamage(int damage) {
 }
 
 std::vector<std::string> Minion::display() {
-	if (activated.getDescription() != "NA") {
+	/*if (silenced == true) {
+		return display_minion_no_ability(getName(), getCost(), atk, def);
+	} else */
+	if ((activated.getDescription() != "NA")) {
 		return display_minion_activated_ability(getName(), getCost(), atk, def,
 				activated.getCost(), activated.getDescription());
 	} else if (triggered.getDescription() != "NA") {
@@ -62,7 +68,7 @@ std::vector<std::string> Minion::display() {
 		return display_minion_no_ability(getName(), getCost(), atk, def);
 	}
 }
-
+/*
 void Minion::setDef(int defence) {
 	def = defence;
 }
@@ -78,7 +84,7 @@ int Minion::getDef() {
 int Minion::getAtk() {
 	return this->atk;
 }
-
+*/
 bool Minion::getSilenced() {
 	return silenced;
 }

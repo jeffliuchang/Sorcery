@@ -12,6 +12,11 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos) {
 		if (pos == 6) {
 			// to be completed ...
 		} else {
+			int size = player1.getBoard().size();
+			if (size <= pos) {
+				std::cout << "target out of range" << std::endl;
+				return false;
+			}
 			player1.minionDamaged(player2, pos, player1.getBoard().at(pos).getDef());
 			return true;
 		}

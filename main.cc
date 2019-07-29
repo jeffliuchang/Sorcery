@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("test.deck"), false};
-	  Player player2{p2, loadDeck("test.deck"), false};
+	  Player player1{p1, loadDeck("test2.deck"), false};
+	  Player player2{p2, loadDeck("test2.deck"), false};
 /*
 	  cout << player1.getName() << endl;
 	  	  for (string &s : player1.getDeck()) {
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 		  } else {
 			  opponent = &player1;
 		  }
-		  cout << cmd << endl;
+		  //cout << cmd << endl;
 		  istringstream line(cmd);
 		  string next;
 		  line >> next;
@@ -135,6 +135,11 @@ int main(int argc, char *argv[]) {
 			  int mine, player, yourPos;
 			  string yours;
 			  if (line >> mine) {
+				  int size = curr->getHand().size();
+				  if (mine > size) {
+					  cout << "there is no " << mine << "th card in hand" << endl;
+					  continue;
+				  }
 				  std::string name = curr->getHand().at(mine-1).getName();
 				  std::pair<Type,int> p = ct.construct(name);
 				  bool played = false;
@@ -152,23 +157,16 @@ int main(int argc, char *argv[]) {
 						  played = ct.spells.at(p.second).usedOn(*target, *opponent, yourPos-1);
 						  
 					  } else if (p.first == Type::Enchantment) {
-						  if (player == 1) player1.enchantMinion(yourPos, ct.enchantments.at(p.second));
-						  else player2.enchantMinion(yourPos, ct.enchantments.at(p.second));
+						  if (player == 1) played = player1.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
+						  else played = player2.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
 						  
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
 					  }
 				  } else {
-					  //cout << "got here" << endl;s
 					  if (p.first == Type::Minion) {
-						  //cout << "play minion" << endl;
-						  //cout << p.second << endl;
-						  //cout << "curr is "<< curr->getName() << endl;
-						  //cout << "opponent is " << opponent->getName() << endl;
 						  played = curr->play(*opponent, ct.minions.at(p.second));
 					  } else if (p.first == Type::Spell) {
-						 //cout << "play spell" << endl;
-						  //cout << p.second << endl;
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
 					  } else if (p.first == Type::Ritual) {
@@ -178,6 +176,8 @@ int main(int argc, char *argv[]) {
 					  }
 				  }
 				  if (played) curr->removeHand(mine-1);
+			  } else {
+				  cout << "invalid play" << endl;
 			  }
 		  } else if (next == "use") {
 			  int mine, player, yourPos;
@@ -209,28 +209,7 @@ int main(int argc, char *argv[]) {
 			  line >> pos;
 			  curr->inspectMinion(pos-1);
 		  } else if (next == "hand") {
-			  int handSize = curr->getHand().size();
-			  vector <std::pair<Type,int>> hands;
-			  int lines = 11;
-			  for (int a = 0; a < handSize; ++a) {
-				  std::string name = curr->getHand().at(a).getName();
-				  hands.emplace_back(ct.construct(name));
-			  }
-			  for (int i = 0; i < lines; ++i) {
-				  for (int j = 0; j < handSize; ++j) {
-					  if (hands.at(j).first == Type::Minion) {
-						  std::cout << ct.minions.at(hands.at(j).second).display().at(i);
-					  } else if (hands.at(j).first == Type::Spell) {
-						  std::cout << display_spell(ct.spells.at(hands.at(j).second).getName(),
-									     ct.spells.at(hands.at(j).second).Card::getCost(),
-									     ct.spells.at(hands.at(j).second).getDescription()).at(i);
-					  } else if (hands.at(j).first == Type::Enchantment) continue;
-					  else if (hands.at(j).first == Type::Ritual) {
-					  }
-					  else if (hands.at(j).first == Type::NA) continue;
-				  }
-				  std::cout << endl;
-			  }
+			  curr->displayHand();
 		  } else if (next == "board") {
 			  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
         		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;

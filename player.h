@@ -64,13 +64,14 @@ public:
 	bool minionToHand(Player& opponent, int boardPos);
 	bool minionDamaged(Player& opponent, int pos, int damage);
 	void buffMinion(int boardPos, int atkBuff, int defBuff);
-	void enchantMinion(int pos, Enchantment e);
+	bool enchantMinion(int pos, Enchantment e);
 	void trigger(Player& opponent, Condition condition, int enterOrExit);
 	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 
 	void displayBoard();
 	void displayBoardRest(int playerNum);
 	void inspectMinion(int pos);
+	void displayHand();
 	/*
 	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
 			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,

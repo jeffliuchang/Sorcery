@@ -1,0 +1,21 @@
+sean
+ten
+hand
+play 1
+play 2 1 1
+play 1 1 1
+hand
+board
+play 1 1 1
+hand
+board
+play 1 1 1
+hand
+board
+draw
+draw
+draw
+hand
+play 2 1 1
+hand
+board
