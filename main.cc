@@ -148,16 +148,13 @@ int main(int argc, char *argv[]) {
 						  pos >> yourPos;
 					  }
 
-					  if (p.first == Type::Minion) {
-					  } else if (p.first == Type::Spell) {
+					  if (p.first == Type::Spell) {
 						  played = ct.spells.at(p.second).usedOn(*target, *opponent, yourPos-1);
 						  
 					  } else if (p.first == Type::Enchantment) {
 						  if (player == 1) player1.enchantMinion(yourPos, ct.enchantments.at(p.second));
 						  else player2.enchantMinion(yourPos, ct.enchantments.at(p.second));
 						  
-					  } else if (p.first == Type::Ritual) {
-						  curr->setRitual(ct.rituals.at(p.second));
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
 					  }
@@ -175,6 +172,7 @@ int main(int argc, char *argv[]) {
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
 					  } else if (p.first == Type::Ritual) {
+						  curr->setRitual(ct.rituals.at(p.second));
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
 					  }
@@ -209,7 +207,7 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "inspect") {
 			  int pos;
 			  line >> pos;
-			  curr->inspectMinion(pos);
+			  curr->inspectMinion(pos-1);
 		  } else if (next == "hand") {
 			  int handSize = curr->getHand().size();
 			  vector <std::pair<Type,int>> hands;
@@ -227,7 +225,8 @@ int main(int argc, char *argv[]) {
 									     ct.spells.at(hands.at(j).second).Card::getCost(),
 									     ct.spells.at(hands.at(j).second).getDescription()).at(i);
 					  } else if (hands.at(j).first == Type::Enchantment) continue;
-					  else if (hands.at(j).first == Type::Ritual) continue;
+					  else if (hands.at(j).first == Type::Ritual) {
+					  }
 					  else if (hands.at(j).first == Type::NA) continue;
 				  }
 				  std::cout << endl;

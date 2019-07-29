@@ -31,11 +31,13 @@ Player::Player(std::string name, std::vector<std::string> mydeck,bool shuffle)
 		if (p.first == Type::Minion) hand.emplace_back(ct.minions.at(p.second));
 		else if (p.first == Type::Spell) hand.emplace_back(ct.spells.at(p.second));
 		else if (p.first == Type::Enchantment) hand.emplace_back(ct.enchantments.at(p.second));
-		else if (p.first == Type::Ritual) hand.emplace_back(ct.rituals.at(p.second));
+		else if (p.first == Type::Ritual) {
+			//std::cout << "put ritual in hand" << std::endl;
+			hand.emplace_back(ct.rituals.at(p.second));
+		}
 		else if (p.first == Type::NA) {
-			std::cout << "no card matching name" << deck.at(0);
+			std::cout << "no card matching name " << deck.at(0) << std::endl;
 			i--;
-			continue;
 		}
 		deck.erase(deck.begin());
 	}
@@ -261,30 +263,40 @@ void Player::displayBoardRest(int playerNum) {
 }
 
 void Player::inspectMinion(int pos) {
-        board.at(pos).display();
+        int line = 11;
+        std::vector<std::string> minion = board.at(pos).display();
+        for (int j = 0; j < line; ++j) std::cout << minion.at(j) << std::endl;
 
+        std::vector<std::vector<std::string>> allE;
         std::vector<Enchantment> enchants = board.at(pos).getEnchants();
         std::string name;
-        int ith = 0;
-        int size = enchants.size();
-        for (int i = 0; i < size; ++i) {
-                ith ++;
+        int enchantSize = enchants.size();
+        for (int i = 0; i < enchantSize; ++i) {
                 name = enchants.at(i).getName();
                 if (name == "Giant Strength") {
-                        display_enchantment_attack_defence(name, enchants.at(i).getCost(),
-                                        enchants.at(i).getDes(), "+2", "+2");
+                        allE.emplace_back(display_enchantment_attack_defence(name, enchants.at(i).getCost(), enchants.at(i).getDes(), "+2", "+2"));
                 } else if (name == "Enrage") {
-                        display_enchantment_attack_defence(name, enchants.at(i).getCost(),
-                                        enchants.at(i).getDes(), "*2", "*2");
+                        allE.emplace_back(display_enchantment_attack_defence(name, enchants.at(i).getCost(), enchants.at(i).getDes(), "*2", "*2"));
                 } else {
-                        display_enchantment(name, enchants.at(i).getCost(), enchants.at(i).getDes());
-                }
-                if (ith == 5) {
-                        std::cout << std::endl;
-                        ith = 0;
+                        allE.emplace_back(display_enchantment(name, enchants.at(i).getCost(), enchants.at(i).getDes()));
                 }
         }
+
+        int size = allE.size();
+        for (int c = 0; c < size; ++c) {
+                for (int a = 0; a < line; ++a) {
+                        int rest = ((size - c) < 5) ? (size - c) : 5;
+                        for (int j = 0; j < rest; ++j) {
+                                std::cout << allE.at(c+j).at(a);
+                        }
+                        std::cout << std::endl;
+                }
+                c+=4;
+        }
+
 }
+
+
 
 
 

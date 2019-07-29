@@ -32,15 +32,18 @@ bool Ritual::usedOn(Player &player1, Player &player2, int owner,int enterOrExit,
 	if (getDescription() == "At the start of your turn, gain 1 magic") {
 		if (condition == Condition::StartOfTurn and owner == 1) {
 			player1.gainMagic(1);
+			charge -= activationCost;
 		}
 	} else if (getDescription() == "Whenever a minion enters play under your control, it gains +1/+1") {
 		if (condition == Condition::MinionEnterPlay and owner == 1) {
 			player1.buffMinion(enterOrExit,1,1);
+			charge -= activationCost;
 		}
 
 	} else if (getDescription() == "Whenever a minion enters play, destroy it") {
 		if (condition == Condition::MinionEnterPlay) {
 			player1.minionToGraveyard(player2,enterOrExit);
+			charge -= activationCost;
 		}
 	}
 	return false;
