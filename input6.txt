@@ -1,0 +1,20 @@
+Jana
+Thrall
+hand
+play 4
+board
+play 4 
+board
+play 1
+play 1
+board
+play 1
+draw
+draw
+draw
+draw
+draw
+play 3
+play 3
+board
+end

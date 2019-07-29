@@ -172,7 +172,7 @@ int main(int argc, char *argv[]) {
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1);
 					  } else if (p.first == Type::Ritual) {
-						  curr->setRitual(ct.rituals.at(p.second));
+						  played = curr->setRitual(ct.rituals.at(p.second));
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
 					  }

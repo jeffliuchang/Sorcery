@@ -14,13 +14,6 @@ void Triggered::setCondition(Condition condition) {
 	this->condition = condition;
 }
 
-bool Triggered::usedOn(Player &player) {
-	return false;
-}
-
-bool Triggered::usedOn(Player &player, int pos) {
-	return false;
-}
 
 bool Triggered::usedOn(Player &player1, Player &player2, int owner, int boardPos, int enterOrExit, Condition condition) {
 	if (getDescription() == "Gain +1/+1 whenever a minion leaves play.") {

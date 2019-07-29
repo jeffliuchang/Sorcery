@@ -14,8 +14,6 @@ public:
 	virtual ~Ability() = default;
 	std::string getDescription() const;
 	void setDescription(std::string description);
-	virtual bool usedOn(Player &player) = 0;
-	virtual bool usedOn(Player &player, int pos) = 0;
 };
 
 

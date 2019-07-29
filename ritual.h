@@ -20,8 +20,6 @@ class Ritual final : public Card, public Triggered {
 	void setCharge(int charge);
 	int getActCost() const;
 	void setActCost(int actCost);
-	bool usedOn(Player &player) override;
-	bool usedOn(Player &player, int pos) override;
 	bool usedOn(Player &player1, Player &player2, int owner,int enterOrExit, Condition condition);
 	std::vector<std::string> display();
 };

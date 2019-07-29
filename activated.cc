@@ -33,14 +33,3 @@ bool Activated::usedOn(Player &player1, Player &player2, int pos) {
 	return false;
 }
 
-bool Activated::usedOn(Player &player, int pos) {
-	/*
-	if (getDescription() == "Deal 1 damage to target minion") {
-		player.minionDamaged(pos,1);
-		return true;
-	}
-	*/
-	return false;
-}
-
-bool Activated::usedOn(Player &player) {return false;}

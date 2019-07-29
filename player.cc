@@ -70,12 +70,13 @@ std::vector<Ritual> Player::getRitual() {
 	return ritual;
 }
 
-void Player::setRitual(Ritual other) {
+bool Player::setRitual(Ritual other) {
 	int size = ritual.size();
 	if ( size > 0 ) {
 		ritual.erase(ritual.begin());
 	}
 	ritual.emplace_back(other);
+	return true;
 }
 
 void Player::loseHp(int hpLost) {
@@ -256,7 +257,7 @@ void Player::displayBoardRest(int playerNum) {
 			else if ((b == 1) || (b == 3)) std::cout << CARD_TEMPLATE_EMPTY[a];
 			else if (b == 2) std::cout << player.at(a);
 			else if ((b == 4) && !graveEmpty) std::cout << grave.at(a);
-			else if ((b == 4) && graveEmpty) std::cout << CARD_TEMPLATE_EMPTY[a];
+			else if ((b == 4) && graveEmpty) std::cout << CARD_TEMPLATE_BORDER[a];
 		}
 		std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN << std::endl;
 	}
