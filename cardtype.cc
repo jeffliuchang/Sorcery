@@ -78,6 +78,20 @@ std::pair<Type,int> Cardtype::construct(std::string name) {
 		}
 
 	}
+
+	int size3 = enchantments.size();
+	for (int i = 0; i < size3; ++i) {
+		if (enchantments.at(i).getName() == name) {
+			return std::pair<Type,int>{Type::Enchantment,i};
+		}
+	}
+
+	int size4 = rituals.size();
+	for (int i = 0; i < size4; ++i) {
+		if (rituals.at(i).getName() == name) {
+			return std::pair<Type,int>{Type::Ritual,i};
+		}
+	}
 	return std::pair<Type,int>{Type::NA,-1};
 }
 
