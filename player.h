@@ -20,6 +20,14 @@ class Enchantment;
 enum class Condition;
 class Ritual;
 
+
+class PlayerDies {
+	std::string name;
+public:
+	PlayerDies(std::string name):name(name) {}
+	std::string getName() {return name;}
+};
+
 class Player {
 	std::string name;
 	int hp;
@@ -62,6 +70,7 @@ public:
 	bool checkSilenced(int pos);
 	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
+	bool minionSpendAction(int boardPos, int spend);
 	bool minionToGraveyard(Player& opponent, int boardPos, int activePlayer);
 	bool resurrect(Player& opponent);
 	bool minionToHand(Player& opponent, int boardPos, int activePlayer);

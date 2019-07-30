@@ -37,7 +37,8 @@ class Minion final: public Card {
 
         void attack(Minion& minion);
         */
-
+        bool spendActions(int spend);
+        void recoverActions();
         Activated getActivated();
         Triggered getTriggered();
         std::vector<Enchantment> getEnchants();

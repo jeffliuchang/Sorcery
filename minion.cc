@@ -27,6 +27,18 @@ Minion::Minion(std::string name, int cost,
 	setDef(def);
 }
 
+bool Minion::spendActions(int spend) {
+	if (actions >= spend) {
+		actions -= spend;
+		return true;
+	}
+	return false;
+}
+
+void Minion::recoverActions() {
+	actions = maxActions;
+}
+
 Activated Minion::getActivated() {
 	return activated;
 }
@@ -99,6 +111,7 @@ void Minion::addEnch(Enchantment newE) {
                 def *= 2;
         } else if (newE.getName() == "Haste") {
                 maxActions +=1;
+                actions += 1;
         } else if (newE.getName() == "Magic Fatigue") {
                 activated.setCost(activated.getCost() + 2);
         } else if (newE.getName() == "Silence") {

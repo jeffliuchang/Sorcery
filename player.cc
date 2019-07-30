@@ -95,6 +95,9 @@ std::vector<Minion> Player::getGy() {
 
 void Player::loseHp(int hpLost) {
 	hp -= hpLost;
+	if (hp <= 0) {
+		throw PlayerDies(getName());
+	}
 }
 
 int Player::getMagic() {
@@ -137,6 +140,10 @@ void Player::startTurn(Player& opponent) {
 	std::cout << getName() << " starts turn" << std::endl;
 	this->draw();
 	magic++;
+	int size = board.size();
+	for (int i = 0; i < size; ++i) {
+		board.at(i).recoverActions();
+	}
 	trigger(opponent, Condition::StartOfTurn,-1,1);
 }
 
@@ -180,6 +187,10 @@ bool Player::play(Player& opponent, Minion newM) {
 void Player::attack(int attacker, Player& player){
 	//std::cout << "begin attack for " << name << std::endl;
 	board.at(attacker).attack(player);
+}
+
+bool Player::minionSpendAction(int boardPos, int spend) {
+	return board.at(boardPos).spendActions(spend);
 }
 
 bool Player::minionToGraveyard(Player& opponent, int boardPos, int activePlayer) {

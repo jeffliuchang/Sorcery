@@ -82,11 +82,10 @@ int main(int argc, char *argv[]) {
 	}
 	catch(InvalidFile&) { return 0;}
 
-
+	string p1;
+	string p2;
   try {
 	  Cardtype ct{};
-	  string p1;
-	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
 	  Player player1{p1, deck1, !testing};
@@ -147,13 +146,32 @@ int main(int argc, char *argv[]) {
 		  } else if (next == "attack") {
 			  int attacker, victim;
 			  if (line >> attacker) {
+				  int size = curr->getBoard().size();
+				  if (size < attacker or attacker < 0) {
+					  cout << "index out of range" << endl;
+					  continue;
+				  }
+				  if (!(curr->minionSpendAction(attacker-1,1))) {
+					  cout << "minion has no action left" << endl;
+					  continue;
+				  }
 				  if (line >> victim) {
 					  if (curr == &player1) {
+						  int size = player2.getBoard().size();
+						  if (size < victim or victim < 0) {
+							  cout << "index out of range" << endl;
+							  continue;
+						  }
 						  int takeDamage = player2.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player1.getBoard().at(attacker-1).getAtk();
 						  curr->minionDamaged(player2,attacker-1,takeDamage,activePlayer);
 						  player2.minionDamaged(player1,victim-1, dealDamage,activePlayer);
 					  } else {
+						  int size = player1.getBoard().size();
+						  if (size < victim or victim < 0) {
+							  cout << "index out of range" << endl;
+							  continue;
+						  }
 						  int takeDamage = player1.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player2.getBoard().at(attacker-1).getAtk();
 						  curr->minionDamaged(player1,attacker-1,takeDamage,activePlayer);
@@ -174,7 +192,7 @@ int main(int argc, char *argv[]) {
 			  string yours;
 			  if (line >> mine) {
 				  int size = curr->getHand().size();
-				  if (mine > size) {
+				  if (mine > size or mine < 0) {
 					  cout << "there is no " << mine << "th card in hand" << endl;
 					  continue;
 				  }
@@ -253,7 +271,7 @@ int main(int argc, char *argv[]) {
 			  int mine, player, yourPos;
 			  if (line >> mine) {
 				  int boardSize = curr->getBoard().size();
-				  if (boardSize < mine) {
+				  if (boardSize < mine or mine < 0) {
 					  cout << "minion not found at position " << mine << endl;
 					  continue;
 				  }
@@ -264,6 +282,10 @@ int main(int argc, char *argv[]) {
 				  int cost = curr->getBoard().at(mine-1).getActivated().getCost();
 				  if (!(curr->spendMagic(cost,testing))) {
 					  cout << "not enough magic" << endl;
+					  continue;
+				  }
+				  if (!(curr->minionSpendAction(mine-1,1))) {
+					  cout << "minion has no action left" << endl;
 					  continue;
 				  }
 				  if ((line >> player) && (line >> yourPos)) {
@@ -305,4 +327,11 @@ int main(int argc, char *argv[]) {
 	  }
   }
   catch (ios::failure &) {}
+  catch (PlayerDies &deadPlayer) {
+	  if (deadPlayer.getName() == p1) {
+		  cout << p2 << " wins!";
+	  } else {
+		  cout << p1 << " wins!";
+	  }
+  }
 }
