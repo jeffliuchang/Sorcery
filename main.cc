@@ -7,6 +7,7 @@
 #include "minion.h"
 #include "spell.h"
 #include "ascii_graphics.h"
+#include "displayGraphic.h"
 using namespace std;
 
 
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]) {
 	vector<string> deck1;
 	vector<string> deck2;
 	bool testing = false;
+	bool graphic = false;
 	try{
 		deck1 = loadDeck("default.deck");
 		deck2 = deck1;
@@ -76,7 +78,7 @@ int main(int argc, char *argv[]) {
 			} else if (argument == "-testing") {
 				testing = true;
 			} else if (argument == "-graphics") {
-
+				graphic = true;
 			}
 		}
 	}
@@ -227,6 +229,7 @@ int main(int argc, char *argv[]) {
 							  continue;
 						  }
 						  played = ct.spells.at(p.second).usedOn(*target, *otherPlayer, yourPos-1,activePlayer);
+						  if (!played) curr->gainMagic(cost);
 						  
 					  } else if (p.first == Type::Enchantment) {
 						  int cost = ct.enchantments.at(p.second).getCost();
@@ -236,6 +239,7 @@ int main(int argc, char *argv[]) {
 						  }
 						  if (player == 1) played = player1.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
 						  else played = player2.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
+						  if (!played) curr->gainMagic(cost);
 						  
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
@@ -253,6 +257,7 @@ int main(int argc, char *argv[]) {
 						  Triggered triggered = ct.minions.at(p.second).getTriggered();
 						  Minion minion(name,cost,atk,def,activated,triggered);
 						  played = curr->play(*opponent, minion);
+						  if (!played) curr->gainMagic(cost);
 					  } else if (p.first == Type::Spell) {
 						  int cost = ct.spells.at(p.second).Card::getCost();
 						  if (!(curr->spendMagic(cost,testing))) {
@@ -261,6 +266,7 @@ int main(int argc, char *argv[]) {
 						  }
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1,activePlayer);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1,activePlayer);
+						  if (!played) curr->gainMagic(cost);
 					  } else if (p.first == Type::Ritual) {
 						  int cost = ct.rituals.at(p.second).getCost();
 						  if (!(curr->spendMagic(cost,testing))) {
@@ -288,15 +294,16 @@ int main(int argc, char *argv[]) {
 					  cout << "minion silenced" << endl;
 					  continue;
 				  }
+				  if (!(curr->minionSpendAction(mine-1,1))) {
+					  cout << "minion has no action left" << endl;
+					  continue;
+				  }
 				  int cost = curr->getBoard().at(mine-1).getActivated().getCost();
 				  if (!(curr->spendMagic(cost,testing))) {
 					  cout << "not enough magic" << endl;
 					  continue;
 				  }
-				  if (!(curr->minionSpendAction(mine-1,1))) {
-					  cout << "minion has no action left" << endl;
-					  continue;
-				  }
+
 				  if ((line >> player) && (line >> yourPos)) {
 
 					  if (player == 1) {
@@ -321,8 +328,10 @@ int main(int argc, char *argv[]) {
 				  continue;
 			  }
 			  curr->inspectMinion(pos-1);
+			  if (graphic) describe_minion(curr->getBoard().at(pos));
 		  } else if (next == "hand") {
 			  curr->displayHand();
+			  if (graphic) display_hand(curr->getHand());
 		  } else if (next == "board") {
 			  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
         		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
@@ -340,6 +349,9 @@ int main(int argc, char *argv[]) {
         		  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
         		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
         		  cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << endl; // print last line
+        		  curr->displayHand();
+        		  if (graphic) display_board(player1, player2);
+        		  if (graphic) display_hand(curr->getHand());
 		  }
 	  }
   }

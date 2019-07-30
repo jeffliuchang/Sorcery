@@ -364,7 +364,7 @@ bool Player::minionToHand(Player& opponent, int boardPos, int activePlayer) {
 	} else {
 		if (board.at(boardPos).removeAllEnch()) {
 			minionToGraveyard(opponent,boardPos, activePlayer);
-			return false;
+			return true;
 		}
 		hand.emplace_back(board.at(boardPos));
 		std::vector<Minion>::iterator it = board.begin();
