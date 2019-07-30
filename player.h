@@ -54,6 +54,7 @@ public:
 	void loseHp(int hpLost);
 	int getMagic();
 	void gainMagic(int gain);
+	bool spendMagic(int spend, bool testing);
 	void removeHand(int pos);
 	void endTurn(Player& opponent);
 	void startTurn(Player& opponent);
@@ -68,20 +69,12 @@ public:
 	void buffMinion(int boardPos, int atkBuff, int defBuff);
 	bool enchantMinion(int pos, Enchantment e);
 	void trigger(Player& opponent, Condition condition, int enterOrExit, int activePlayer);
-	//std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5);
 
 	void displayBoard();
 	void displayBoardRest(int playerNum);
 	void inspectMinion(int pos);
 	void displayHand();
-	/*
-	Player(int hp, int magic, std::string name, std::shared_ptr<Ritual> ritual,
-			std::shared_ptr<Board> board, std::shared_ptr<Hand> hand,
-			std::shared_ptr<Graveyard> gy, std::shared_ptr<Deck> deck);
-	~Player() = default;
-	void castedBy(Ability& ability);
-	void attackedBy(Minion& minion);
-	*/
+
 };
 
 

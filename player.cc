@@ -105,6 +105,19 @@ void Player::gainMagic(int gain) {
 	magic += gain;
 }
 
+bool Player::spendMagic(int spend, bool testing) {
+	if (magic >= spend) {
+		magic -= spend;
+		return true;
+	} else {
+		if (testing) {
+			magic = 0;
+			return true;
+		}
+	}
+	return false;
+}
+
 void Player::removeHand(int pos) {
 	//std::cout << "printing first two cards before erase: " << std::endl;
 	//for (int j = 0; j < 2; ++j) std::cout << hand.at(j) << std::endl;
@@ -328,7 +341,7 @@ bool Player::resurrect(Player& opponent) {
 bool Player::minionToHand(Player& opponent, int boardPos, int activePlayer) {
 	int boardSize = getBoard().size();
 	int handSize = getHand().size();
-	if (boardSize <= boardPos) {
+	if (boardSize <= boardPos or boardPos < 0) {
 		std::cout << "Target out of range" << std::endl;
 		return false;
 	} else if (handSize >= 5) {

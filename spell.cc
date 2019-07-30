@@ -24,6 +24,11 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) 
 	} else if (getDescription() == "Return target minion to its owner's hand") {
 		return player1.minionToHand(player2, pos, activePlayer);
 	} else if (getDescription() == "Destroy the top enchantment on target minion") {
+		int boardSize = player1.getBoard().size();
+		if (boardSize <= pos or pos < 0) {
+			std::cout << "invalid use of spell" << std::endl;
+			return false;
+		}
 		int size = player1.getBoard().at(pos).getEnchants().size();
 		if (size == 0) {
 			std::cout << "minion has no enchantments" << std::endl;

@@ -19,8 +19,14 @@ bool overwrite(ifstream &ifs, istream &is, string &s) {
  	return true;
 }
 
+class InvalidFile {};
+
 vector<string> loadDeck(string file) {
 	ifstream ifs{file};
+	if (ifs.fail()) {
+		cout << file << " not found" << endl;
+		throw InvalidFile();
+	}
 	string s;
 	vector<string> vec;
 	while (getline(ifs,s)) {
@@ -38,28 +44,43 @@ void updateCurr(Player *&curr, Player *player1, Player * player2) {
 }
 
 int main(int argc, char *argv[]) {
-  cin.exceptions(ios::eofbit|ios::failbit);
-  string cmd;
-  ifstream init;
-  for (int i = 1; i < argc - 1; i++) {
-	  istringstream iss(argv[i]);
-	  string argument;
-	  iss >> argument;
-	  if (argument == "-deck1") {
+	cin.exceptions(ios::eofbit|ios::failbit);
+	string cmd;
+	ifstream init;
+	vector<string> deck1;
+	vector<string> deck2;
+	bool testing = false;
+	try{
+		deck1 = loadDeck("default.deck");
+		deck2 = deck1;
+		for (int i = 1; i < argc ; i++) {
+			istringstream iss(argv[i]);
+			string argument;
+			cout << argument << endl;
+			iss >> argument;
+			if (argument == "-deck1") {
+				istringstream iss(argv[i+1]);
+				iss >> argument;
+				deck1 = loadDeck(argument);
+				i++;
+			} else if (argument == "-deck2") {
+				istringstream iss(argv[i+1]);
+				iss >> argument;
+				deck2 = loadDeck(argument);
+				i++;
+			} else if (argument == "-init") {
+				istringstream iss(argv[i+1]);
+				iss >> argument;
+				init.open(argument,ifstream::in);
+				i++;
+			} else if (argument == "-testing") {
+				testing = true;
+			} else if (argument == "-graphics") {
 
-	  } else if (argument == "-deck2") {
-
-	  } else if (argument == "-init") {
-		  istringstream iss(argv[i+1]);
-		  iss >> argument;
-		  init.open(argument,ifstream::in);
-		  i++;
-	  } else if (argument == "-testing") {
-
-	  } else if (argument == "-graphics") {
-
-	  }
-  }
+			}
+		}
+	}
+	catch(InvalidFile&) { return 0;}
 
 
   try {
@@ -68,18 +89,8 @@ int main(int argc, char *argv[]) {
 	  string p2;
 	  overwrite(init,cin,p1);
 	  overwrite(init,cin,p2);
-	  Player player1{p1, loadDeck("test2.deck"), false};
-	  Player player2{p2, loadDeck("test2.deck"), false};
-/*
-	  cout << player1.getName() << endl;
-	  	  for (string &s : player1.getDeck()) {
-	  		  cout << s << endl;
-	  	  }
-	  	  cout << player2.getName() << endl;
-	  	  for (string &s : player2.getDeck()) {
-	  	  		  cout << s << endl;
-	  	  }
-*/
+	  Player player1{p1, deck1, !testing};
+	  Player player2{p2, deck2, !testing};
 	  Player *curr = &player1;
 	  Player *opponent = &player2;
 	  int activePlayer = 1;
@@ -97,18 +108,42 @@ int main(int argc, char *argv[]) {
 		  string next;
 		  line >> next;
 		  if (next == "help") {
-
+			  cout << "Commands: help -- Display this message." << endl;
+			  cout << "          end -- End the current player's turn." << endl;
+			  cout << "          quit -- End the game." << endl;
+			  cout << "          attack minion other-minion -- Orders minion to attack other-minion." << endl;
+			  cout << "          attack minion -- Orders minion to attack the opponent." << endl;
+			  cout << "          play card [target-player target-card] -- Play card, optionally targeting target-card owned by target-player." << endl;
+			  cout << "          use minion [target-player target-card] -- Use minion's special ability, optionally targeting target-card owned by target-player." << endl;
+			  cout << "          inspect minion -- View a minion's card and all enchantments on that minion." << endl;
+			  cout << "          hand -- Describe all cards in your hand." << endl;
+			  cout << "          board -- Describe all cards on the board." << endl;
 		  } else if (next == "end") {
 			  curr->endTurn(*opponent);
 			  updateCurr(curr,&player1,&player2);
 			  curr->startTurn(*opponent);
 		  } else if (next == "quit") {
-
+			  return 0;
 		  } else if (next == "draw") {
-			  curr->draw();
-
+			  if (testing) {
+				  curr->draw();
+			  } else {
+				  cout << "only available in testing mode" << endl;
+			  }
 		  } else if (next == "discard") {
-
+			  if (testing) {
+				  int toDiscard;
+				  if (line >> toDiscard) {
+					  int size = curr->getHand().size();
+					  if (size < toDiscard) {
+						  cout << "card index out of range" << endl;
+						  continue;
+					  }
+					  curr->removeHand(toDiscard-1);
+				  }
+			  } else {
+				  cout << "only available in testing mode" << endl;
+			  }
 		  } else if (next == "attack") {
 			  int attacker, victim;
 			  if (line >> attacker) {
@@ -159,9 +194,19 @@ int main(int argc, char *argv[]) {
 					  }
 
 					  if (p.first == Type::Spell) {
+						  int cost = ct.spells.at(p.second).Card::getCost();
+						  if (!(curr->spendMagic(cost,testing))) {
+							  cout << "not enough magic" << endl;
+							  continue;
+						  }
 						  played = ct.spells.at(p.second).usedOn(*target, *otherPlayer, yourPos-1,activePlayer);
 						  
 					  } else if (p.first == Type::Enchantment) {
+						  int cost = ct.enchantments.at(p.second).getCost();
+						  if (!(curr->spendMagic(cost,testing))) {
+							  cout << "not enough magic" << endl;
+							  continue;
+						  }
 						  if (player == 1) played = player1.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
 						  else played = player2.enchantMinion(yourPos-1, ct.enchantments.at(p.second));
 						  
@@ -171,6 +216,10 @@ int main(int argc, char *argv[]) {
 				  } else {
 					  if (p.first == Type::Minion) {
 						  int cost = curr->getHand().at(mine-1).getCost();
+						  if (!(curr->spendMagic(cost,testing))) {
+							  cout << "not enough magic" << endl;
+							  continue;
+						  }
 						  int atk = curr->getHand().at(mine-1).getAtk();
 						  int def = curr->getHand().at(mine-1).getDef();
 						  Activated activated = ct.minions.at(p.second).getActivated();
@@ -178,9 +227,19 @@ int main(int argc, char *argv[]) {
 						  Minion minion(name,cost,atk,def,activated,triggered);
 						  played = curr->play(*opponent, minion);
 					  } else if (p.first == Type::Spell) {
+						  int cost = ct.spells.at(p.second).Card::getCost();
+						  if (!(curr->spendMagic(cost,testing))) {
+							  cout << "not enough magic" << endl;
+							  continue;
+						  }
 						  if (curr == &player1) played = ct.spells.at(p.second).usedOn(player1, player2,-1,activePlayer);
 						  else played = ct.spells.at(p.second).usedOn(player2, player1,-1,activePlayer);
 					  } else if (p.first == Type::Ritual) {
+						  int cost = ct.rituals.at(p.second).getCost();
+						  if (!(curr->spendMagic(cost,testing))) {
+							  cout << "not enough magic" << endl;
+							  continue;
+						  }
 						  played = curr->setRitual(ct.rituals.at(p.second));
 					  } else if (p.first == Type::NA) {
 						  cout << "The given name does not match any card." << endl;
@@ -192,30 +251,29 @@ int main(int argc, char *argv[]) {
 			  }
 		  } else if (next == "use") {
 			  int mine, player, yourPos;
-			  string yours;
 			  if (line >> mine) {
 				  int boardSize = curr->getBoard().size();
 				  if (boardSize < mine) {
 					  cout << "minion not found at position " << mine << endl;
 					  continue;
 				  }
-				  if (curr->checkSilenced(mine-1)) continue;
-				  if ((line >> player) && (line >> yours)) {
-					  if (yours == "r") {
-						  if (player == 1) {
-							  //curr->getBoard().at(mine-1).getActivated().usedOn(player1,player2);
-						  } else {
-							  //curr->getBoard().at(mine-1).getActivated().usedOn(player2,player2);
-						  }
+				  if (curr->checkSilenced(mine-1)) {
+					  cout << "minion silenced" << endl;
+					  continue;
+				  }
+				  int cost = curr->getBoard().at(mine-1).getActivated().getCost();
+				  if (!(curr->spendMagic(cost,testing))) {
+					  cout << "not enough magic" << endl;
+					  continue;
+				  }
+				  if ((line >> player) && (line >> yourPos)) {
+
+					  if (player == 1) {
+						  curr->getBoard().at(mine-1).getActivated().usedOn(player1, player2, yourPos-1);
 					  } else {
-						  istringstream pos(yours);
-						  pos >> yourPos;
-						  if (player == 1) {
-							  curr->getBoard().at(mine-1).getActivated().usedOn(player1, player2, yourPos-1);
-						  } else {
-							  curr->getBoard().at(mine-1).getActivated().usedOn(player2, player1, yourPos-1);
-						  }
+						  curr->getBoard().at(mine-1).getActivated().usedOn(player2, player1, yourPos-1);
 					  }
+
 				  } else {
 					  curr->getBoard().at(mine-1).getActivated().usedOn(*curr,*opponent,-1);
 				  }
@@ -245,7 +303,6 @@ int main(int argc, char *argv[]) {
         		  cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << endl; // print last line
 		  }
 	  }
-	  cout << "loop ends" << endl;
   }
-  catch (ios::failure &) {cout << "got here" << endl;}
+  catch (ios::failure &) {}
 }

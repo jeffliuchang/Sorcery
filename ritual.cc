@@ -40,8 +40,11 @@ bool Ritual::usedOn(Player &player1, Player &player2, int owner,int enterOrExit,
 
 	} else if (getDescription() == "Whenever a minion enters play, destroy it") {
 		if (condition == Condition::MinionEnterPlay and charge >= activationCost) {
-			player1.minionToGraveyard(player2,enterOrExit,1);
+			std::cout << "charges: " << charge << std::endl;
+			std::cout << "activationCost: " << activationCost << std::endl;
 			charge -= activationCost;
+			player1.minionToGraveyard(player2,enterOrExit,1);
+
 		}
 	}
 	return false;
