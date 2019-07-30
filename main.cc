@@ -151,15 +151,16 @@ int main(int argc, char *argv[]) {
 					  cout << "index out of range" << endl;
 					  continue;
 				  }
-				  if (!(curr->minionSpendAction(attacker-1,1))) {
-					  cout << "minion has no action left" << endl;
-					  continue;
-				  }
+
 				  if (line >> victim) {
 					  if (curr == &player1) {
 						  int size = player2.getBoard().size();
 						  if (size < victim or victim < 0) {
 							  cout << "index out of range" << endl;
+							  continue;
+						  }
+						  if (!(curr->minionSpendAction(attacker-1,1))) {
+							  cout << "minion has no action left" << endl;
 							  continue;
 						  }
 						  int takeDamage = player2.getBoard().at(victim-1).getAtk();
@@ -172,12 +173,20 @@ int main(int argc, char *argv[]) {
 							  cout << "index out of range" << endl;
 							  continue;
 						  }
+						  if (!(curr->minionSpendAction(attacker-1,1))) {
+							  cout << "minion has no action left" << endl;
+							  continue;
+						  }
 						  int takeDamage = player1.getBoard().at(victim-1).getAtk();
 						  int dealDamage = player2.getBoard().at(attacker-1).getAtk();
 						  curr->minionDamaged(player1,attacker-1,takeDamage,activePlayer);
 						  player1.minionDamaged(player2,victim-1, dealDamage,activePlayer);
 					  }
 				  } else {
+					  if (!(curr->minionSpendAction(attacker-1,1))) {
+						  cout << "minion has no action left" << endl;
+						  continue;
+					  }
 					  //std::cout << "reach 1" << std::endl;
 					  if (curr == &player1) {
 						  curr->attack(attacker-1, player2);
@@ -208,7 +217,7 @@ int main(int argc, char *argv[]) {
 						  yourPos = 6;
 					  } else {
 						  istringstream pos(yours);
-						  pos >> yourPos;
+						  if (!(pos >> yourPos)) continue;
 					  }
 
 					  if (p.first == Type::Spell) {
@@ -302,7 +311,15 @@ int main(int argc, char *argv[]) {
 			  }
 		  } else if (next == "inspect") {
 			  int pos;
-			  line >> pos;
+			  if (!(line >> pos)) {
+				  cout << "please enter a number after inspect " << endl;
+				  continue;
+			  }
+			  int size = curr->getBoard().size();
+			  if (size < pos or pos < 0) {
+				  cout << "index out of range" << endl;
+				  continue;
+			  }
 			  curr->inspectMinion(pos-1);
 		  } else if (next == "hand") {
 			  curr->displayHand();

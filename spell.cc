@@ -10,7 +10,7 @@ Spell::Spell(std::string name, std::string description, int cost)
 
 bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) {
 	if (getDescription() == "Destroy target minion or ritual") {// pos = 6 for ritual
-		if (pos == 6) {
+		if (pos == 5) {
 			return player1.removeRitual();
 		} else {
 			int size = player1.getBoard().size();
@@ -18,7 +18,7 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) 
 				std::cout << "target out of range" << std::endl;
 				return false;
 			}
-			player1.minionDamaged(player2, pos, player1.getBoard().at(pos).getDef(), activePlayer);
+			player1.minionToGraveyard(player2, pos, activePlayer);
 			return true;
 		}
 	} else if (getDescription() == "Return target minion to its owner's hand") {
@@ -34,7 +34,7 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) 
 			std::cout << "minion has no enchantments" << std::endl;
 			return false;
 		}
-		if (player1.getBoard().at(pos).removeEnch(size-1)) {
+		if (player1.removeTopEnchant(pos)) {
 			player1.minionToGraveyard(player2,pos,activePlayer);
 		}
 		return true;
@@ -44,7 +44,7 @@ bool Spell::usedOn(Player &player1, Player &player2, int pos, int activePlayer) 
 			std::cout << player1.getName() << " has no ritual" << std::endl;
 			return false;
 		}
-		player1.getRitual().at(0).setCharge(player1.getRitual().at(0).getCharge()+3);
+		player1.rechargeRitual(3);
 		return true;
 	} else if (getDescription() == "Resurrect the top minion in your graveyard and set its defence to 1") {
 		return player1.resurrect(player2);

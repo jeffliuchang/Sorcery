@@ -56,6 +56,7 @@ public:
 	std::vector<Ritual> getRitual();
 	bool removeRitual();
 	bool setRitual(Ritual other);
+	void rechargeRitual(int recharge);
 	std::vector<Minion> getGy();
 
 	int getHp();
@@ -77,6 +78,7 @@ public:
 	bool minionDamaged(Player& opponent, int pos, int damage, int activePlayer);
 	void buffMinion(int boardPos, int atkBuff, int defBuff);
 	bool enchantMinion(int pos, Enchantment e);
+	bool removeTopEnchant(int pos);
 	void trigger(Player& opponent, Condition condition, int enterOrExit, int activePlayer);
 
 	void displayBoard();

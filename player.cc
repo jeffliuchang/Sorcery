@@ -88,6 +88,9 @@ bool Player::setRitual(Ritual other) {
 	ritual.emplace_back(other);
 	return true;
 }
+void Player::rechargeRitual(int recharge) {
+	ritual.at(0).setCharge(ritual.at(0).getCharge()+recharge);
+}
 
 std::vector<Minion> Player::getGy() {
 	return gy;
@@ -239,17 +242,12 @@ bool Player::enchantMinion(int pos, Enchantment e) {
 	board.at(pos).addEnch(e);
 	return true;
 }
-/*
-std::vector<bool> multipleMinionsDamaged(int damage, int start = 0, int end = 5) {
-	int size = board.size();
-	int realEnd = size<end ? size : end;
-	std::vector<bool> die;
-	for (int i = start; i < realEnd; i++) {
-		die.emplace_back(board.at(i).takeDamage(damage));
-	}
-	return die;
+
+bool Player::removeTopEnchant(int pos) {
+	int size = board.at(pos).getEnchants().size();
+	return board.at(pos).removeEnch(size-1);
 }
-*/
+
 void Player::displayBoard() {
 	std::vector<std::vector<std::string>> myBoard;
 	int boardSize = board.size();
