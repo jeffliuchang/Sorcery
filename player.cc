@@ -182,13 +182,16 @@ void Player::attack(int attacker, Player& player){
 	board.at(attacker).attack(player);
 }
 
-void Player::minionToGraveyard(Player& opponent, int boardPos, int activePlayer) {
+bool Player::minionToGraveyard(Player& opponent, int boardPos, int activePlayer) {
+	int size = board.size();
+	if (size <= boardPos or boardPos < 0) return false;
 	gy.emplace(gy.begin(),board.at(boardPos));
 	gy.at(0).removeAllEnch();
 	auto it = board.begin();
 	for (int i = 0; i < boardPos; ++i) { ++it; }
 	board.erase(it);
 	trigger(opponent,Condition::MinionExitPlay,-1, activePlayer);
+	return true;
 }
 
 bool Player::minionDamaged(Player& opponent, int pos, int damage, int activePlayer) {
@@ -208,6 +211,8 @@ bool Player::minionDamaged(Player& opponent, int pos, int damage, int activePlay
 
 
 void Player::buffMinion(int boardPos, int atkBuff, int defBuff) {
+	int size = board.size();
+	if (size <= boardPos or boardPos < 0) return;
 	int atk = board.at(boardPos).getAtk();
 	board.at(boardPos).setAtk(atk+atkBuff);
 	int def = board.at(boardPos).getDef();

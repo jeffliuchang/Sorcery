@@ -7,3 +7,5 @@ board
 play 2
 board
 end
+play 3
+board

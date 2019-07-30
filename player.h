@@ -62,7 +62,7 @@ public:
 	bool checkSilenced(int pos);
 	bool play(Player& opponent, Minion newM);
 	void attack(int attacker, Player& player);
-	void minionToGraveyard(Player& opponent, int boardPos, int activePlayer);
+	bool minionToGraveyard(Player& opponent, int boardPos, int activePlayer);
 	bool resurrect(Player& opponent);
 	bool minionToHand(Player& opponent, int boardPos, int activePlayer);
 	bool minionDamaged(Player& opponent, int pos, int damage, int activePlayer);
