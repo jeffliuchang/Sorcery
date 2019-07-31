@@ -1,4 +1,3 @@
-
 #include "ascii_graphics.h"
 #include <sstream>
 

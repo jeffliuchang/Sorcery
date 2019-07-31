@@ -43,7 +43,7 @@ Player::Player(std::string name, std::vector<std::string> mydeck,bool shuffle)
 	}
 
 
-	std::cout << "player constructor for " << name << std::endl;
+	//std::cout << "player constructor for " << name << std::endl;
 }
 
 std::string Player::getName() {

@@ -7,7 +7,7 @@
 #include "minion.h"
 #include "spell.h"
 #include "ascii_graphics.h"
-#include "displayGraphic.h"
+//#include "displayGraphic.h"
 using namespace std;
 
 
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 			  opponent = &player1;
 			  activePlayer = 2;
 		  }
-		  cout << cmd << endl;
+		  //cout << cmd << endl;
 		  istringstream line(cmd);
 		  string next;
 		  line >> next;
@@ -328,10 +328,10 @@ int main(int argc, char *argv[]) {
 				  continue;
 			  }
 			  curr->inspectMinion(pos-1);
-			  if (graphic) describe_minion(curr->getBoard().at(pos));
+			  //if (graphic) describe_minion(curr->getBoard().at(pos));
 		  } else if (next == "hand") {
 			  curr->displayHand();
-			  if (graphic) display_hand(curr->getHand());
+			  //if (graphic) display_hand(curr->getHand());
 		  } else if (next == "board") {
 			  cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
         		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
@@ -350,8 +350,8 @@ int main(int argc, char *argv[]) {
         		  for (int a = 0; a < 165; ++a) cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
         		  cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << endl; // print last line
         		  curr->displayHand();
-        		  if (graphic) display_board(player1, player2);
-        		  if (graphic) display_hand(curr->getHand());
+        		  //if (graphic) display_board(player1, player2);
+        		  //if (graphic) display_hand(curr->getHand());
 		  }
 	  }
   }
